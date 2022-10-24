@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Text } from "../components";
+import { Text, Spacing } from "../components";
 
 const Container = styled.div`
   display: flex;
@@ -8,17 +8,13 @@ const Container = styled.div`
   color: white;
 `;
 
-const Padding = styled.div`
-  height: 20px;
-`;
-
 const ErrorPage = () => {
   return (
     <Container>
       <Text fontSize="lg" bold>
         Oops!
       </Text>
-      <Padding />
+      <Spacing />
       <Text>Page Not Found.</Text>
     </Container>
   );

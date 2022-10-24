@@ -1,9 +1,10 @@
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
+import { COLORS } from "../config";
 
 const Layout = () => {
   const Container = styled.div`
-    background-color: #0D1117;
+    background-color: ${COLORS.BACKGROUND};
     display: flex;
     align-items: center;
     justify-content: center;

@@ -1,7 +1,9 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 const handleFontSize = (fontSize) => {
   switch (fontSize) {
+    case "xl":
+      return "2.5rem";
     case "lg":
       return "1.5rem";
     case "sm":
@@ -14,7 +16,7 @@ const handleFontSize = (fontSize) => {
 const Text = styled.text`
   color: white;
   font-size: ${({ fontSize }) => handleFontSize(fontSize)};
-  font-weight: ${({ bold }) => bold ? 'bold' : 'normal'}
+  font-weight: ${({ bold }) => (bold ? "bold" : "normal")};
 `;
 
 export default Text;

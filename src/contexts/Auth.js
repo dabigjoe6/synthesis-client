@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (isUserLoggedIn) {
-      navigate(location.state.from || "/");
+      navigate(location.state.from || "/", { replace: true });
     }
   }, [isUserLoggedIn]);
 

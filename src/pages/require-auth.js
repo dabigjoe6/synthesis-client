@@ -7,10 +7,6 @@ const RequireAuth = () => {
   const location = useLocation();
   const { isUserLoggedIn } = useContext(AuthContext);
 
-  useEffect(() => {
-    console.log("IsUserLoggedIn", isUserLoggedIn);
-  }, [isUserLoggedIn]);
-
   if (!isUserLoggedIn) {
     return <Navigate to="/login" state={{ from: location }} />;
   }
