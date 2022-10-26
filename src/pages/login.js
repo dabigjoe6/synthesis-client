@@ -42,11 +42,15 @@ const Login = () => {
   const [password, setPassword] = useState();
 
   const handleEmail = (event) => {
-    setEmail(event.target.email);
+    setEmail(event.target.value);
   };
 
   const handlePassword = (event) => {
-    setPassword(event.target.password);
+    setPassword(event.target.value);
+  };
+
+  const handleSignIn = () => {
+    signUserIn(email);
   };
 
   return (
@@ -61,7 +65,7 @@ const Login = () => {
           type="password"
           onChange={handlePassword}
         />
-        <Button onClick={signUserIn} label="Log in" />
+        <Button onClick={handleSignIn} label="Log in" disabled={!email} />
       </Form>
     </Container>
   );

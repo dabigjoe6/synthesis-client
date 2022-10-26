@@ -10,9 +10,17 @@ export const AuthProvider = ({ children }) => {
   const location = useLocation();
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
-  const signUserIn = () => {
-    setIsUserLoggedIn(true);
+  const [email, setEmail] = useState("");
+
+  const signUserIn = (email) => {
+    setEmail(email);
   };
+
+  useEffect(() => {
+    if (email) {
+      setIsUserLoggedIn(true);
+    }
+  }, [email]);
 
   useEffect(() => {
     if (isUserLoggedIn) {
@@ -21,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   }, [isUserLoggedIn]);
 
   return (
-    <AuthContext.Provider value={{ isUserLoggedIn, signUserIn }}>
+    <AuthContext.Provider value={{ isUserLoggedIn, signUserIn, email }}>
       {children}
     </AuthContext.Provider>
   );
