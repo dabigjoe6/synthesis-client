@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
   Text,
@@ -7,6 +7,7 @@ import {
   SubscriptionItem,
   Spacing,
 } from "../components";
+import useSubscription from "../hooks/subscription";
 
 const Container = styled.div`
   display: flex;
@@ -31,7 +32,10 @@ const SubscriptionsContainer = styled.div`
 const NewSubscribptionButton = styled(Button)``;
 
 const Home = () => {
-  const subscriptions = [1];
+  const [subscriptions, setSubscriptions] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { getUserSubscriptions } = useSubscription();
 
   const [isSubscriptionModalVisible, setSubscriptionModalVisibility] =
     useState(false);
@@ -41,12 +45,42 @@ const Home = () => {
   };
 
   const hideSubscriptionModal = () => {
+    _getUserSubscriptions();
     setSubscriptionModalVisibility(false);
   };
 
+  const _getUserSubscriptions = async () => {
+    setIsLoading(true);
+    const _subscriptions = await getUserSubscriptions();
+    setSubscriptions(_subscriptions);
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    _getUserSubscriptions();
+  }, []);
+
   return (
     <Container>
-      {subscriptions.length === 0 ? (
+      {isLoading ? (
+        <Text>Loading...</Text>
+      ) : subscriptions && subscriptions.length > 0 ? (
+        <SubscriptionsContainer>
+          <Text fontSize="xl" bold>
+            Subscriptions
+          </Text>
+          <Text>Here's a list of all your subscriptions</Text>
+          <Spacing />
+          {subscriptions.map((item) => (
+            <SubscriptionItem data={item.subscription} />
+          ))}
+          <Spacing />
+          <NewSubscribptionButton
+            label="Add new Subscription"
+            onClick={showSubscriptionModal}
+          />
+        </SubscriptionsContainer>
+      ) : (
         <>
           <Text fontSize="lg">You don't have any subscriptions</Text>
           <Button
@@ -54,20 +88,6 @@ const Home = () => {
             onClick={showSubscriptionModal}
           />
         </>
-      ) : (
-        <SubscriptionsContainer>
-          <Text fontSize="xl" bold>
-            Subscriptions
-          </Text>
-          <Text>Here's a list of all your subscriptions</Text>
-          <Spacing />
-          <SubscriptionItem />
-          <Spacing />
-          <NewSubscribptionButton
-            label="Add new Subscription"
-            onClick={showSubscriptionModal}
-          />
-        </SubscriptionsContainer>
       )}
       <SubscriptionModal
         isVisible={isSubscriptionModalVisible}

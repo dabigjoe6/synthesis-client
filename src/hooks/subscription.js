@@ -1,8 +1,11 @@
+import { useContext } from "react";
 import { SERVICES } from "../config";
+import { AuthContext } from "../contexts/Auth";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useSubscription = () => {
+  const { email } = useContext(AuthContext);
   const subscribeToMedium = async (params) => {
     await fetch(BASE_URL + "/subscribe/medium", {
       method: "POST",
@@ -28,8 +31,25 @@ const useSubscription = () => {
     }
   };
 
+  const getUserSubscriptions = async () => {
+    try {
+      const response = await fetch(BASE_URL + "/subscribe/getSubscriptions", {
+        method: "POST",
+        body: JSON.stringify({ email }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      return (await response.json())?.subscriptions;
+    } catch (err) {
+      throw err;
+    }
+  };
+
   return {
     subscribeToService,
+    getUserSubscriptions,
   };
 };
 

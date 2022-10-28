@@ -29,11 +29,18 @@ const Actions = styled.div`
   justify-content: flex-end;
 `;
 
-const SubscriptionItem = () => {
+const SubscriptionItem = ({ data }) => {
+  const { name, url } = data;
+
+  const handleUrl = (url) => {
+    const regex = /(?<=@).*/
+
+    return url.match(regex)
+  }
   return (
     <Container>
       <Text>
-        Olawwale - <Text fontSize="sm">Medium</Text>
+        {handleUrl(url)} - <Text fontSize="sm">{name}</Text>
       </Text>
       <Actions>
         <UnsubscribeButton transparent label="Unsubscribe" />
