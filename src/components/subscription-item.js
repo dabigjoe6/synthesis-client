@@ -37,9 +37,27 @@ const SubscriptionItem = ({ data }) => {
   const { unsubscribeFromAuthor } = useContext(UserContext);
 
   const handleUrl = (url) => {
-    const regex = /(?<=@).*/;
+    const mediumUsernameRegex = /(?<=@).*/;
 
-    return url.match(regex);
+    let name = url.match(mediumUsernameRegex) && url.match(mediumUsernameRegex)[0]
+  
+    let split = url.split("/@");
+  
+    if (split.length >= 2) {
+      name = split[1];
+    }
+
+    split = url.split(".");
+
+    if (split.length === 3) {
+      name = split[0].split("//")[1];
+    }
+  
+    if (!name) {
+      return (name = url);
+    }
+  
+    return name;
   };
 
   const handleUnsubscription = async () => {

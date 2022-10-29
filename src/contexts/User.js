@@ -19,7 +19,6 @@ export const UserProvider = ({ children }) => {
   const _getUserSubscriptions = async () => {
     setDataIsLoading(true);
     const _subscriptions = await getUserSubscriptions();
-    console.log("_subscriptions", _subscriptions);
     setSubscriptions(_subscriptions);
     setDataIsLoading(false);
   };
@@ -34,7 +33,6 @@ export const UserProvider = ({ children }) => {
       email,
       author,
     });
-    console.log("_newSubscriptions", _newSubscriptions)
     setSubscriptions(_newSubscriptions);
   };
 
