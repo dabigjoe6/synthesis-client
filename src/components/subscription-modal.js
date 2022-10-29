@@ -6,8 +6,7 @@ import Input from "./input";
 import Spacing from "./spacing";
 import Text from "./text";
 import Button from "./button";
-import useSubscription from "../hooks/subscription";
-import { AuthContext } from "../contexts/Auth";
+import { UserContext } from "../contexts/User";
 
 const Container = styled.div`
   display: flex;
@@ -53,9 +52,7 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const { email } = useContext(AuthContext);
-
-  const { subscribeToService } = useSubscription();
+  const { subscribeToAuthor } = useContext(UserContext);
 
   const handleAuthor = (event) => {
     setAuthor(event.target.value);
@@ -64,10 +61,7 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
   const handleSubscription = () => {
     try {
       setIsLoading(true);
-      subscribeToService(service, {
-        email,
-        author,
-      });
+      subscribeToAuthor(service, author);
       setIsLoading(false);
       onClose();
     } catch (err) {

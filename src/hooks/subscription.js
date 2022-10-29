@@ -7,24 +7,25 @@ const BASE_URL = process.env.REACT_APP_BASE_URL;
 const useSubscription = () => {
   const { email } = useContext(AuthContext);
   const subscribeToMedium = async (params) => {
-    await fetch(BASE_URL + "/subscribe/medium", {
+    const response = await fetch(BASE_URL + "/subscribe/medium", {
       method: "POST",
       body: JSON.stringify(params),
       headers: {
         "Content-Type": "application/json",
       },
     });
+
+    const data = await response.json();
+    return data.subscriptions;
   };
 
   const subscribeToService = async (service, params) => {
     try {
       switch (service) {
         case SERVICES.MEDIUM:
-          await subscribeToMedium(params);
-          break;
+          return subscribeToMedium(params);
         default:
-          await subscribeToMedium(params);
-          break;
+          return subscribeToMedium(params);
       }
     } catch (err) {
       throw err;
@@ -41,7 +42,24 @@ const useSubscription = () => {
         },
       });
 
-      return (await response.json())?.subscriptions;
+      return (await response.json())?.subscriptions || [];
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  const unsubscribe = async (id) => {
+    try {
+      const response = await fetch(BASE_URL + "/subscribe/unsubscribe", {
+        method: "POST",
+        body: JSON.stringify({ email, subscriptionIds: [id] }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      return data.subscriptions;
     } catch (err) {
       throw err;
     }
@@ -50,6 +68,7 @@ const useSubscription = () => {
   return {
     subscribeToService,
     getUserSubscriptions,
+    unsubscribe,
   };
 };
 

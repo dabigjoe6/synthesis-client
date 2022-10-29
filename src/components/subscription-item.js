@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import styled from "styled-components";
+import { UserContext } from "../contexts/User";
 import Text from "./text";
 import Button from "./button";
 import { COLORS } from "../config";
@@ -30,20 +32,30 @@ const Actions = styled.div`
 `;
 
 const SubscriptionItem = ({ data }) => {
-  const { name, url } = data;
+  const { name, url, _id } = data;
+
+  const { unsubscribeFromAuthor } = useContext(UserContext);
 
   const handleUrl = (url) => {
-    const regex = /(?<=@).*/
+    const regex = /(?<=@).*/;
 
-    return url.match(regex)
-  }
+    return url.match(regex);
+  };
+
+  const handleUnsubscription = async () => {
+    await unsubscribeFromAuthor(_id);
+  };
   return (
     <Container>
       <Text>
         {handleUrl(url)} - <Text fontSize="sm">{name}</Text>
       </Text>
       <Actions>
-        <UnsubscribeButton transparent label="Unsubscribe" />
+        <UnsubscribeButton
+          transparent
+          label="unsubscribe"
+          onClick={handleUnsubscription}
+        />
       </Actions>
     </Container>
   );

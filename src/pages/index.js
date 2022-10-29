@@ -1,5 +1,6 @@
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "../contexts/Auth";
+import { UserProvider } from "../contexts/User";
 import { Layout } from "../components";
 
 import Home from "./home";
@@ -11,15 +12,17 @@ const Router = () => {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/login" element={<Login />} />
-            <Route element={<RequireAuth />}>
-              <Route path="/" element={<Home />} />
+        <UserProvider>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/login" element={<Login />} />
+              <Route element={<RequireAuth />}>
+                <Route path="/" element={<Home />} />
+              </Route>
+              <Route path="*" element={<ErrorPage />} />
             </Route>
-            <Route path="*" element={<ErrorPage />} />
-          </Route>
-        </Routes>
+          </Routes>
+        </UserProvider>
       </AuthProvider>
     </BrowserRouter>
   );

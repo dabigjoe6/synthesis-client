@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import {
   Text,
@@ -7,7 +7,7 @@ import {
   SubscriptionItem,
   Spacing,
 } from "../components";
-import useSubscription from "../hooks/subscription";
+import { UserContext } from "../contexts/User";
 
 const Container = styled.div`
   display: flex;
@@ -32,10 +32,7 @@ const SubscriptionsContainer = styled.div`
 const NewSubscribptionButton = styled(Button)``;
 
 const Home = () => {
-  const [subscriptions, setSubscriptions] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const { getUserSubscriptions } = useSubscription();
+  const { subscriptions, isDataLoading } = useContext(UserContext);
 
   const [isSubscriptionModalVisible, setSubscriptionModalVisibility] =
     useState(false);
@@ -45,24 +42,12 @@ const Home = () => {
   };
 
   const hideSubscriptionModal = () => {
-    _getUserSubscriptions();
     setSubscriptionModalVisibility(false);
   };
 
-  const _getUserSubscriptions = async () => {
-    setIsLoading(true);
-    const _subscriptions = await getUserSubscriptions();
-    setSubscriptions(_subscriptions);
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    _getUserSubscriptions();
-  }, []);
-
   return (
     <Container>
-      {isLoading ? (
+      {isDataLoading ? (
         <Text>Loading...</Text>
       ) : subscriptions && subscriptions.length > 0 ? (
         <SubscriptionsContainer>
@@ -72,7 +57,10 @@ const Home = () => {
           <Text>Here's a list of all your subscriptions</Text>
           <Spacing />
           {subscriptions.map((item) => (
-            <SubscriptionItem data={item.subscription} />
+            <SubscriptionItem
+              key={item.subscription.url}
+              data={item.subscription}
+            />
           ))}
           <Spacing />
           <NewSubscribptionButton
