@@ -13,10 +13,20 @@ const handleFontSize = (fontSize) => {
   }
 };
 
+const handleTextAlignment = (align) => {
+  switch(align) {
+    case "center":
+      return "center"
+    default:
+      return ""
+  }
+}
+
 const Text = styled.text`
   color: white;
   font-size: ${({ fontSize }) => handleFontSize(fontSize)};
   font-weight: ${({ bold }) => (bold ? "bold" : "normal")};
+  text-align: ${({ align }) => handleTextAlignment(align)};
 `;
 
 export default Text;

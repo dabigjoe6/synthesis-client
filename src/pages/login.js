@@ -56,16 +56,17 @@ const Login = () => {
   return (
     <Container>
       <H2>MorningBrew</H2>
-      <Text fontSize="lg">Sign in to your account</Text>
+      <Text fontSize="md" align="center">Email digest of the most important articles from your favourite authors.</Text>
       <Form>
         <Input label="Email address" value={email} onChange={handleEmail} />
-        <Input
+        {/* TODO: Add Password when there's authentication */}
+        {/* <Input
           label="Password"
           value={password}
           type="password"
           onChange={handlePassword}
-        />
-        <Button onClick={handleSignIn} label="Log in" disabled={!email} />
+        /> */}
+        <Button onClick={handleSignIn} label="Continue" disabled={!email} />
       </Form>
     </Container>
   );

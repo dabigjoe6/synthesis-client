@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "../contexts/Auth";
 import { UserProvider } from "../contexts/User";
@@ -9,6 +10,11 @@ import RequireAuth from "./require-auth";
 import ErrorPage from "./error-page";
 
 const Router = () => {
+  useEffect(() => {
+    const dev = process.env.NODE_ENV
+    document.title = `MorningBrew - ${dev === 'development' ? 'DEV' : 'STAGING'}`
+  }, [])
+
   return (
     <BrowserRouter>
       <AuthProvider>
