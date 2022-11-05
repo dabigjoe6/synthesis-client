@@ -37,7 +37,7 @@ const SubscriptionItem = ({ data }) => {
   const { unsubscribeFromAuthor } = useContext(UserContext);
 
   const handleUrl = (url) => {
-    const mediumUsernameRegex = /(?<=@).*/;
+    const mediumUsernameRegex = /(?:@).*/;
 
     let name = url.match(mediumUsernameRegex) && url.match(mediumUsernameRegex)[0]
   
