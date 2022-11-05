@@ -54,7 +54,7 @@ const Home = () => {
           <Text fontSize="xl" bold>
             Subscriptions
           </Text>
-          <Text>Here's a list of all your subscriptions</Text>
+          <Text>You'll get an email digest of one article from your subscriptions at 7:30 AM UTC everyday (This will be customizable in future updates)</Text>
           <Spacing />
           {subscriptions.map((item) => (
             <SubscriptionItem
