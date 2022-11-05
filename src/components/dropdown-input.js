@@ -8,13 +8,17 @@ const Select = styled.select`
   border-width: 0px;
   padding-left: 3px;
   color: white;
-  background: ${COLORS.BACKGROUND_LIGHT}
+  background: ${COLORS.BACKGROUND_LIGHT};
 `;
 
-const DropdownInput = () => {
+const DropdownInput = ({ value, values, onSelect }) => {
   return (
-    <Select>
-      <option value="medium">Medium</option>
+    <Select value={value} onChange={onSelect}>
+      {values.map((value, index) => (
+        <option key={index} value={value}>
+          {value}
+        </option>
+      ))}
     </Select>
   );
 };

@@ -48,7 +48,7 @@ const CloseButton = styled(Button)`
 
 const SubscriptionModal = ({ isVisible, onClose }) => {
   const [author, setAuthor] = useState("");
-  const [service, setService] = useState("");
+  const [service, setService] = useState(Object.values(SERVICES)[0]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -84,12 +84,13 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
         <Spacing />
         <Text>Select service</Text>
         <DropdownInput
+          value={service}
           values={Object.values(SERVICES)}
           onSelect={handleSelectedService}
         />
         <Input
           lightShade
-          label="Enter author's URL or username"
+          label={`Enter author's ${service} URL`}
           name="author"
           type="text"
           value={author}
