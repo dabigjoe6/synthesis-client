@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { COLORS } from "../config";
 
-const handleBackground = ({ transparent, disabled }) => {
+const handleBackground = ({ disabled, transparent }) => {
   if (disabled) return "grey";
   if (transparent) return "transparent";
 
@@ -12,8 +12,7 @@ const Container = styled.button`
   width: 100%;
   margin-top: 20px;
   height: 35px;
-  background: ${({ transparent, disabled }) =>
-    handleBackground({ disabled, transparent })};
+  background: ${({ disabled, transparent }) => handleBackground({ disabled, transparent })};
   border-radius: 5px;
   color: ${COLORS.BACKGROUND};
   border-width: 0;
@@ -26,7 +25,7 @@ const Button = ({ label, onClick, disabled, loading, ...props }) => {
     }
   };
   return (
-    <Container onClick={handleClick} {...props}>
+    <Container disabled={disabled} onClick={handleClick} {...props}>
       {loading ? "Loading..." : label}
     </Container>
   );

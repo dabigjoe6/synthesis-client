@@ -1,5 +1,7 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
+import * as Yup from "yup";
+import { useFormik } from "formik";
 import { Input, Button, Text } from "../components";
 import { COLORS } from "../config";
 import { AuthContext } from "../contexts/Auth";
@@ -36,29 +38,40 @@ const Form = styled.div`
   box-sizing: border-box;
 `;
 
+const LoginSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email").required("Required"),
+});
+
 const Login = () => {
   const { signUserIn } = useContext(AuthContext);
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
 
-  const handleEmail = (event) => {
-    setEmail(event.target.value);
-  };
-
-  const handlePassword = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleSignIn = () => {
+  const handleSignIn = ({ email }) => {
     signUserIn(email);
   };
+
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+    },
+    onSubmit: handleSignIn,
+    validationSchema: LoginSchema,
+  });
 
   return (
     <Container>
       <H2>MorningBrew</H2>
-      <Text fontSize="md" align="center">Email digest of the most important articles from your favourite authors.</Text>
+      <Text fontSize="md" align="center">
+        Email digest of the most important articles from your favourite authors.
+      </Text>
       <Form>
-        <Input label="Email address" value={email} onChange={handleEmail} />
+        <Input
+          label="Email address"
+          id="email"
+          name="email"
+          type="email"
+          value={formik.values.email}
+          onChange={formik.handleChange}
+        />
         {/* TODO: Add Password when there's authentication */}
         {/* <Input
           label="Password"
@@ -66,7 +79,11 @@ const Login = () => {
           type="password"
           onChange={handlePassword}
         /> */}
-        <Button onClick={handleSignIn} label="Continue" disabled={!email} />
+        <Button
+          onClick={formik.handleSubmit}
+          label="Continue"
+          disabled={!formik.isValid}
+        />
       </Form>
     </Container>
   );
