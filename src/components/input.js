@@ -10,11 +10,18 @@ const Container = styled.div`
   margin-top: 10px;
 `;
 
-const Input = ({ label, ...props }) => {
+const ErrorText = styled(Text)`
+  font-size: 0.7rem;
+  color: red;
+  margin-top: 5px;
+`;
+
+const Input = ({ label, error, ...props }) => {
   return (
     <Container>
       <Text>{label}</Text>
       <TextInput {...props} />
+      {error ? <ErrorText>{error}</ErrorText> : null}
     </Container>
   );
 };

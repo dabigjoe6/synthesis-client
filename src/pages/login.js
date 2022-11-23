@@ -71,6 +71,7 @@ const Login = () => {
           type="email"
           value={formik.values.email}
           onChange={formik.handleChange}
+          error={formik.errors.email}
         />
         {/* TODO: Add Password when there's authentication */}
         {/* <Input

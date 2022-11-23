@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import styled from "styled-components";
+import * as Yup from "yup";
 import { COLORS, SERVICES } from "../config";
 import DropdownInput from "./dropdown-input";
 import Input from "./input";
@@ -7,6 +8,7 @@ import Spacing from "./spacing";
 import Text from "./text";
 import Button from "./button";
 import { UserContext } from "../contexts/User";
+import { useFormik } from "formik";
 
 const Container = styled.div`
   display: flex;
@@ -46,19 +48,17 @@ const CloseButton = styled(Button)`
   width: fit-content;
 `;
 
-const SubscriptionModal = ({ isVisible, onClose }) => {
-  const [author, setAuthor] = useState("");
-  const [service, setService] = useState(Object.values(SERVICES)[0]);
+const MediumSchema = Yup.object().shape({
+  author: Yup.string().url("Enter a valid URL").required("Required"),
+  service: Yup.string(),
+});
 
+const SubscriptionModal = ({ isVisible, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { subscribeToAuthor } = useContext(UserContext);
 
-  const handleAuthor = (event) => {
-    setAuthor(event.target.value);
-  };
-
-  const handleSubscription = () => {
+  const handleSubscription = ({ service, author }) => {
     try {
       setIsLoading(true);
       subscribeToAuthor(service, author);
@@ -70,9 +70,14 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
     }
   };
 
-  const handleSelectedService = (event) => {
-    setService(event.target.value);
-  };
+  const formik = useFormik({
+    initialValues: {
+      author: "",
+      service: Object.values(SERVICES)[0],
+    },
+    onSubmit: handleSubscription,
+    validationSchema: MediumSchema,
+  });
 
   return (
     <Wrapper isVisible={isVisible}>
@@ -84,22 +89,25 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
         <Spacing />
         <Text>Select service</Text>
         <DropdownInput
-          value={service}
+          value={formik.values.service}
           values={Object.values(SERVICES)}
-          onSelect={handleSelectedService}
+          onSelect={formik.handleChange}
+          name="service"
         />
         <Input
           lightShade
-          label={`Enter author's ${service} URL`}
+          label={`Enter author's ${formik.values.service} URL`}
           name="author"
           type="text"
-          value={author}
-          onChange={handleAuthor}
+          value={formik.values.author}
+          onChange={formik.handleChange}
+          error={formik.errors.author}
         />
         <Button
           label="Subscribe"
-          onClick={handleSubscription}
+          onClick={formik.handleSubmit}
           loading={isLoading}
+          disabled={!formik.isValid}
         />
       </Container>
     </Wrapper>

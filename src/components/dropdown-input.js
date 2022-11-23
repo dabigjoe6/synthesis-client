@@ -11,9 +11,9 @@ const Select = styled.select`
   background: ${COLORS.BACKGROUND_LIGHT};
 `;
 
-const DropdownInput = ({ value, values, onSelect }) => {
+const DropdownInput = ({ value, values, onSelect, ...props }) => {
   return (
-    <Select value={value} onChange={onSelect}>
+    <Select value={value} onChange={onSelect} {...props}>
       {values.map((value, index) => (
         <option key={index} value={value}>
           {value}
