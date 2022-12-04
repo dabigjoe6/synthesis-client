@@ -5,6 +5,7 @@ import Text from "./text";
 import Button from "./button";
 import { COLORS } from "../config";
 import { DialogContext } from "../contexts/Dialog";
+import { toast } from "react-toastify";
 const Container = styled.div`
   display: flex;
   align-items: center;
@@ -64,8 +65,14 @@ const SubscriptionItem = ({ data }) => {
   };
 
   const handleUnsubscription = async () => {
-    const primaryAction = () => {
-      unsubscribeFromAuthor(_id);
+    const primaryAction = async () => {
+      try {
+        await unsubscribeFromAuthor(_id);
+        toast.success("Succesfully unsubscribed");
+      } catch (err) {
+        toast.error("Something went wrong");
+        console.error("Could not unsubscribe " + err);
+      }
     };
     displayDialog({
       dialog: `Are you sure you want to unsubscribe from ${handleUrl(url)}`,

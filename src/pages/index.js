@@ -9,6 +9,9 @@ import Login from "./login";
 import RequireAuth from "./require-auth";
 import ErrorPage from "./error-page";
 import { DialogProvider } from "../contexts/Dialog";
+import { ToastContainer } from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 const Router = () => {
   useEffect(() => {
@@ -32,6 +35,7 @@ const Router = () => {
                 <Route path="*" element={<ErrorPage />} />
               </Route>
             </Routes>
+            <ToastContainer hideProgressBar={true} theme="dark" />
           </DialogProvider>
         </UserProvider>
       </AuthProvider>

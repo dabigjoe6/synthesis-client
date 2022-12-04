@@ -9,6 +9,7 @@ import Text from "./text";
 import Button from "./button";
 import { UserContext } from "../contexts/User";
 import { useFormik } from "formik";
+import { toast } from "react-toastify";
 
 const Container = styled.div`
   display: flex;
@@ -64,8 +65,10 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
       subscribeToAuthor(service, author);
       setIsLoading(false);
       onClose();
+      toast.success("Subscription succesfull!");
     } catch (err) {
       console.error(err, "Failed to subscribe to " + service);
+      toast.error("Failed to subscribe");
       setIsLoading(false);
     }
   };
