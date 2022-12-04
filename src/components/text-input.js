@@ -11,6 +11,7 @@ const TextInput = styled.input`
   color: white;
   padding-right: 7px;
   padding-left: 7px;
+  font-size: 0.8rem;
 `;
 
 export default TextInput;

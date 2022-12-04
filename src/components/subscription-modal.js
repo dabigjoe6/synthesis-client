@@ -50,7 +50,13 @@ const CloseButton = styled(Button)`
 `;
 
 const MediumSchema = Yup.object().shape({
-  author: Yup.string().url("Enter a valid URL").required("Required"),
+  author: Yup.string()
+    .url("Enter a valid URL")
+    .matches(
+      /^https?:\/\/(?:www\.)?(?:[a-z0-9]+\.medium\.com|medium\.com\/@[a-z0-9]+)$/,
+      "Must be a valid Medium URL eg https://medium.com/@josepholabisi or https://josepholabisi.medium.com"
+    )
+    .required("Required"),
   service: Yup.string(),
 });
 
@@ -107,6 +113,7 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
           label={`Enter author's ${formik.values.service} URL`}
           name="author"
           type="text"
+          placeholder="Enter authors medium URL"
           value={formik.values.author}
           onChange={formik.handleChange}
           error={formik.errors.author}
