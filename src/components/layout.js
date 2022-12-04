@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import { COLORS } from "../config";
+import Dialog from "./dialog";
 
 const Layout = () => {
   const Container = styled.div`
@@ -14,6 +15,7 @@ const Layout = () => {
   return (
     <Container>
       <Outlet />
+      <Dialog />
     </Container>
   );
 };

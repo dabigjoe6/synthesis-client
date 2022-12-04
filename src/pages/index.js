@@ -8,26 +8,31 @@ import Home from "./home";
 import Login from "./login";
 import RequireAuth from "./require-auth";
 import ErrorPage from "./error-page";
+import { DialogProvider } from "../contexts/Dialog";
 
 const Router = () => {
   useEffect(() => {
-    const dev = process.env.NODE_ENV
-    document.title = `MorningBrew - ${dev === 'development' ? 'DEV' : 'STAGING'}`
-  }, [])
+    const dev = process.env.NODE_ENV;
+    document.title = `MorningBrew - ${
+      dev === "development" ? "DEV" : "STAGING"
+    }`;
+  }, []);
 
   return (
     <BrowserRouter>
       <AuthProvider>
         <UserProvider>
-          <Routes>
-            <Route element={<Layout />}>
-              <Route path="/login" element={<Login />} />
-              <Route element={<RequireAuth />}>
-                <Route path="/" element={<Home />} />
+          <DialogProvider>
+            <Routes>
+              <Route element={<Layout />}>
+                <Route path="/login" element={<Login />} />
+                <Route element={<RequireAuth />}>
+                  <Route path="/" element={<Home />} />
+                </Route>
+                <Route path="*" element={<ErrorPage />} />
               </Route>
-              <Route path="*" element={<ErrorPage />} />
-            </Route>
-          </Routes>
+            </Routes>
+          </DialogProvider>
         </UserProvider>
       </AuthProvider>
     </BrowserRouter>
