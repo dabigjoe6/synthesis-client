@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useCallback } from "react";
 import styled from "styled-components";
 import { UserContext } from "../contexts/User";
 import Text from "./text";
@@ -64,7 +64,7 @@ const SubscriptionItem = ({ data }) => {
     return name;
   };
 
-  const handleUnsubscription = async () => {
+  const handleUnsubscription = useCallback(async () => {
     const primaryAction = async () => {
       try {
         await unsubscribeFromAuthor(_id);
@@ -78,7 +78,7 @@ const SubscriptionItem = ({ data }) => {
       dialog: `Are you sure you want to unsubscribe from ${handleUrl(url)}`,
       primaryAction,
     });
-  };
+  }, []);
 
   return (
     <Container>

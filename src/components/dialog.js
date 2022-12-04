@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useCallback } from "react";
 import styled from "styled-components";
 import { DialogContext } from "../contexts/Dialog";
 import Button from "./button";
@@ -56,7 +56,7 @@ const Dialog = () => {
     resetModal,
   } = useContext(DialogContext);
 
-  const handlePrimaryAction = () => {
+  const handlePrimaryAction = useCallback(() => {
     let primaryActionText = "Yes";
     let action;
     if (typeof dialogPrimaryAction.current === "object") {
@@ -72,9 +72,9 @@ const Dialog = () => {
     };
 
     return <ActionButton onClick={handleAction} label={primaryActionText} />;
-  };
+  }, []);
 
-  const handleSecondaryAction = () => {
+  const handleSecondaryAction = useCallback(() => {
     let secondaryActionText = "No";
     let action;
     if (typeof dialogSecondaryAction.current === "object") {
@@ -92,7 +92,7 @@ const Dialog = () => {
     };
 
     return <ActionButton onClick={handleAction} label={secondaryActionText} />;
-  };
+  }, []);
 
   return !isModalVisible ? null : (
     <Container>

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import styled from "styled-components";
 import {
   Text,
@@ -6,7 +6,7 @@ import {
   SubscriptionModal,
   SubscriptionItem,
   Spacing,
-  Footer
+  Footer,
 } from "../components";
 import { UserContext } from "../contexts/User";
 
@@ -38,13 +38,13 @@ const Home = () => {
   const [isSubscriptionModalVisible, setSubscriptionModalVisibility] =
     useState(false);
 
-  const showSubscriptionModal = () => {
+  const showSubscriptionModal = useCallback(() => {
     setSubscriptionModalVisibility(true);
-  };
+  }, []);
 
-  const hideSubscriptionModal = () => {
+  const hideSubscriptionModal = useCallback(() => {
     setSubscriptionModalVisibility(false);
-  };
+  }, []);
 
   return (
     <Container>
@@ -55,7 +55,10 @@ const Home = () => {
           <Text fontSize="xl" bold>
             Subscriptions
           </Text>
-          <Text>You'll get an email digest of one article from your subscriptions at 7:30 AM UTC everyday (This will be customizable in future updates)</Text>
+          <Text>
+            You'll get an email digest of one article from your subscriptions at
+            8:00 AM UTC everyday (This will be customizable in future updates)
+          </Text>
           <Spacing />
           {subscriptions.map((item) => (
             <SubscriptionItem

@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import styled from "styled-components";
 import { COLORS } from "../config";
 
@@ -20,11 +21,11 @@ const Container = styled.button`
 `;
 
 const Button = ({ label, onClick, disabled, loading, ...props }) => {
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     if (!disabled) {
       onClick();
     }
-  };
+  }, [disabled]);
   return (
     <Container disabled={disabled} onClick={handleClick} {...props}>
       {loading ? "Loading..." : label}

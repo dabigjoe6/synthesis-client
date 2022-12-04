@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useCallback } from "react";
 import { SERVICES } from "../config";
 import { AuthContext } from "../contexts/Auth";
 
@@ -19,7 +19,7 @@ const useSubscription = () => {
     return data.subscriptions;
   };
 
-  const subscribeToService = async (service, params) => {
+  const subscribeToService = useCallback(async (service, params) => {
     try {
       switch (service) {
         case SERVICES.MEDIUM:
@@ -30,9 +30,9 @@ const useSubscription = () => {
     } catch (err) {
       throw err;
     }
-  };
+  }, []);
 
-  const getUserSubscriptions = async () => {
+  const getUserSubscriptions = useCallback(async () => {
     try {
       const response = await fetch(BASE_URL + "/subscribe/getSubscriptions", {
         method: "POST",
@@ -46,9 +46,9 @@ const useSubscription = () => {
     } catch (err) {
       throw err;
     }
-  };
+  }, [email]);
 
-  const unsubscribe = async (id) => {
+  const unsubscribe = useCallback(async (id) => {
     try {
       const response = await fetch(BASE_URL + "/subscribe/unsubscribe", {
         method: "POST",
@@ -63,7 +63,7 @@ const useSubscription = () => {
     } catch (err) {
       throw err;
     }
-  };
+  }, [email]);
 
   return {
     subscribeToService,

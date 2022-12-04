@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useCallback } from "react";
 import styled from "styled-components";
 import * as Yup from "yup";
 import { COLORS, SERVICES } from "../config";
@@ -60,12 +60,14 @@ const MediumSchema = Yup.object().shape({
   service: Yup.string(),
 });
 
+const SERVICES_VALUES = Object.values(SERVICES);
+
 const SubscriptionModal = ({ isVisible, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { subscribeToAuthor } = useContext(UserContext);
 
-  const handleSubscription = ({ service, author }) => {
+  const handleSubscription = useCallback(({ service, author }) => {
     try {
       setIsLoading(true);
       subscribeToAuthor(service, author);
@@ -77,17 +79,17 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
       toast.error("Failed to subscribe");
       setIsLoading(false);
     }
-  };
+  }, []);
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     formik.resetForm();
     onClose();
-  };
+  }, []);
 
   const formik = useFormik({
     initialValues: {
       author: "",
-      service: Object.values(SERVICES)[0],
+      service: SERVICES_VALUES[0],
     },
     onSubmit: handleSubscription,
     validationSchema: MediumSchema,
@@ -104,7 +106,7 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
         <Text>Select service</Text>
         <DropdownInput
           value={formik.values.service}
-          values={Object.values(SERVICES)}
+          values={SERVICES_VALUES}
           onSelect={formik.handleChange}
           name="service"
         />
