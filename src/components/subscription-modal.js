@@ -29,7 +29,7 @@ const Container = styled.div`
 `;
 
 const Wrapper = styled.div`
-  display: ${({ isVisible }) => (isVisible ? "flex" : "none")};
+  display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
@@ -64,13 +64,18 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
       setIsLoading(true);
       subscribeToAuthor(service, author);
       setIsLoading(false);
-      onClose();
+      handleClose();
       toast.success("Subscription succesfull!");
     } catch (err) {
       console.error(err, "Failed to subscribe to " + service);
       toast.error("Failed to subscribe");
       setIsLoading(false);
     }
+  };
+
+  const handleClose = () => {
+    formik.resetForm();
+    onClose();
   };
 
   const formik = useFormik({
@@ -82,10 +87,10 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
     validationSchema: MediumSchema,
   });
 
-  return (
-    <Wrapper isVisible={isVisible}>
+  return isVisible ? (
+    <Wrapper>
       <Container>
-        <CloseButton label="Cancel" onClick={onClose} />
+        <CloseButton label="Cancel" onClick={handleClose} />
         <Text fontSize="xl" bold>
           Add New Subscription
         </Text>
@@ -114,7 +119,7 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
         />
       </Container>
     </Wrapper>
-  );
+  ) : null;
 };
 
 export default SubscriptionModal;
