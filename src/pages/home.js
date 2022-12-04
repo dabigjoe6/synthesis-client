@@ -6,6 +6,7 @@ import {
   SubscriptionModal,
   SubscriptionItem,
   Spacing,
+  Footer
 } from "../components";
 import { UserContext } from "../contexts/User";
 
@@ -81,6 +82,7 @@ const Home = () => {
         isVisible={isSubscriptionModalVisible}
         onClose={hideSubscriptionModal}
       />
+      <Footer />
     </Container>
   );
 };

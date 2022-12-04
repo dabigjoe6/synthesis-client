@@ -5,3 +5,4 @@ export { default as Text } from "./text";
 export { default as SubscriptionModal } from "./subscription-modal";
 export { default as Spacing } from "./spacing";
 export { default as SubscriptionItem } from "./subscription-item";
+export { default as Footer } from './footer';

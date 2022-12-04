@@ -1,5 +1,6 @@
 import { useState, createContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { SIGNED_IN_EMAIL_KEY } from "../config";
 
 export const AuthContext = createContext({
   isUserLoggedIn: false,
@@ -14,13 +15,26 @@ export const AuthProvider = ({ children }) => {
 
   const signUserIn = (email) => {
     setEmail(email);
+    localStorage.setItem(SIGNED_IN_EMAIL_KEY, JSON.stringify(email));
+  };
+
+  const signUserOut = () => {
+    setEmail("");
+    localStorage.removeItem(SIGNED_IN_EMAIL_KEY);
   };
 
   useEffect(() => {
     if (email) {
       setIsUserLoggedIn(true);
+    } else {
+      setIsUserLoggedIn(false);
     }
   }, [email]);
+
+  useEffect(() => {
+    let _email = localStorage.getItem(SIGNED_IN_EMAIL_KEY);
+    setEmail(JSON.parse(_email));
+  }, []);
 
   useEffect(() => {
     if (isUserLoggedIn) {
@@ -29,7 +43,9 @@ export const AuthProvider = ({ children }) => {
   }, [isUserLoggedIn]);
 
   return (
-    <AuthContext.Provider value={{ isUserLoggedIn, signUserIn, email }}>
+    <AuthContext.Provider
+      value={{ isUserLoggedIn, signUserIn, email, signUserOut }}
+    >
       {children}
     </AuthContext.Provider>
   );
