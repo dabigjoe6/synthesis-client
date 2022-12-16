@@ -51,14 +51,15 @@ const CloseButton = styled(Button)`
 
 const MediumSchema = Yup.object().shape({
   author: Yup.string()
-    .url("Enter a valid URL")
-    .matches(
-      /^https?:\/\/(?:www\.)?(?:[a-z0-9]+\.medium\.com|medium\.com\/@[a-z0-9]+)$/,
-      "Must be a valid Medium URL eg https://medium.com/@josepholabisi or https://josepholabisi.medium.com"
-    )
+    .url("Enter a valid URL eg https://medium.com/@josepholabisi or https://josepholabisi.medium.com")
     .required("Required"),
   service: Yup.string(),
 });
+
+const SubstackSchema = Yup.object().shape({
+  author: Yup.string().url("Enter a valid URL eg https://timdenning.substack.com").required("Required"),
+  service: Yup.string(),
+})
 
 const SERVICES_VALUES = Object.values(SERVICES);
 
@@ -66,6 +67,17 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const { subscribeToAuthor } = useContext(UserContext);
+
+  const handleSchema = () => {
+    switch(formik.values.service) {
+      case SERVICES.MEDIUM:
+        return MediumSchema;
+      case SERVICES.SUBSTACK:
+        return SubstackSchema;
+      default:
+        return MediumSchema;
+    }
+  }
 
   const handleSubscription = useCallback(({ service, author }) => {
     try {
@@ -92,7 +104,7 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
       service: SERVICES_VALUES[0],
     },
     onSubmit: handleSubscription,
-    validationSchema: MediumSchema,
+    validationSchema: handleSchema,
   });
 
   return isVisible ? (
@@ -115,7 +127,7 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
           label={`Enter author's ${formik.values.service} URL`}
           name="author"
           type="text"
-          placeholder="Enter authors medium URL"
+          placeholder={`Enter authors ${formik.values.service} URL`}
           value={formik.values.author}
           onChange={formik.handleChange}
           error={formik.errors.author}
