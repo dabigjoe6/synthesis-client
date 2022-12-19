@@ -1,32 +1,23 @@
 import { useContext, useCallback } from "react";
-import { SERVICES } from "../config";
 import { AuthContext } from "../contexts/Auth";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const useSubscription = () => {
   const { email } = useContext(AuthContext);
-  const subscribeToMedium = async (params) => {
-    const response = await fetch(BASE_URL + "/subscribe/medium", {
-      method: "POST",
-      body: JSON.stringify(params),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await response.json();
-    return data.subscriptions;
-  };
 
   const subscribeToService = useCallback(async (service, params) => {
     try {
-      switch (service) {
-        case SERVICES.MEDIUM:
-          return subscribeToMedium(params);
-        default:
-          return subscribeToMedium(params);
-      }
+      const response = await fetch(BASE_URL + "/subscribe/" + service, {
+        method: "POST",
+        body: JSON.stringify(params),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      const data = await response.json();
+      return data.subscriptions;
     } catch (err) {
       throw err;
     }
