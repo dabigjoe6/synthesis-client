@@ -7,7 +7,8 @@ export const COLORS = {
 
 export const SERVICES = {
   MEDIUM: "Medium",
-  SUBSTACK: "Substack"
+  SUBSTACK: "Substack",
+  RSS: "RSS"
 };
 
 export const SIGNED_IN_EMAIL_KEY = "morningbrew_email";

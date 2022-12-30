@@ -51,15 +51,26 @@ const CloseButton = styled(Button)`
 
 const MediumSchema = Yup.object().shape({
   author: Yup.string()
-    .url("Enter a valid URL eg https://medium.com/@josepholabisi or https://josepholabisi.medium.com")
+    .url(
+      "Enter a valid URL eg https://medium.com/@josepholabisi or https://josepholabisi.medium.com"
+    )
     .required("Required"),
   service: Yup.string(),
 });
 
 const SubstackSchema = Yup.object().shape({
-  author: Yup.string().url("Enter a valid URL eg https://timdenning.substack.com").required("Required"),
+  author: Yup.string()
+    .url("Enter a valid URL eg https://timdenning.substack.com")
+    .required("Required"),
   service: Yup.string(),
-})
+});
+
+const RSSSchema = Yup.object().shape({
+  author: Yup.string()
+    .url("Enter a valid RSS feed URL eg https://blog.gregbrockman.com/feed")
+    .required("Required"),
+  service: Yup.string(),
+});
 
 const SERVICES_VALUES = Object.values(SERVICES);
 
@@ -69,15 +80,17 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
   const { subscribeToAuthor } = useContext(UserContext);
 
   const handleSchema = () => {
-    switch(formik.values.service) {
+    switch (formik.values.service) {
       case SERVICES.MEDIUM:
         return MediumSchema;
       case SERVICES.SUBSTACK:
         return SubstackSchema;
+      case SERVICES.RSS:
+        return RSSSchema;
       default:
         return MediumSchema;
     }
-  }
+  };
 
   const handleSubscription = useCallback(({ service, author }) => {
     try {
