@@ -15,11 +15,11 @@ const useSubscription = () => {
           "Content-Type": "application/json",
         },
       });
-  
+
       const data = await response.json();
       return data.subscriptions;
     } catch (err) {
-      throw err;
+      console.error("Could not subscribe to service: ", err);
     }
   }, []);
 
@@ -35,26 +35,29 @@ const useSubscription = () => {
 
       return (await response.json())?.subscriptions || [];
     } catch (err) {
-      throw err;
+      console.error("Could not get user subscriptions: ", err);
     }
   }, [email]);
 
-  const unsubscribe = useCallback(async (id) => {
-    try {
-      const response = await fetch(BASE_URL + "/subscribe/unsubscribe", {
-        method: "POST",
-        body: JSON.stringify({ email, subscriptionIds: [id] }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+  const unsubscribe = useCallback(
+    async (id) => {
+      try {
+        const response = await fetch(BASE_URL + "/subscribe/unsubscribe", {
+          method: "POST",
+          body: JSON.stringify({ email, subscriptionIds: [id] }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-      const data = await response.json();
-      return data.subscriptions;
-    } catch (err) {
-      throw err;
-    }
-  }, [email]);
+        const data = await response.json();
+        return data.subscriptions;
+      } catch (err) {
+        console.error("Could not unsubscribe: ", err);
+      }
+    },
+    [email]
+  );
 
   return {
     subscribeToService,

@@ -16,7 +16,7 @@ const Container = styled.button`
   background: ${({ disabled, transparent }) =>
     handleBackground({ disabled, transparent })};
   border-radius: 5px;
-  color: ${COLORS.BACKGROUND};
+  color: ${({ transparent }) => (transparent ? "white" : COLORS.BACKGROUND_LIGHT)};
   border-width: 0;
 `;
 

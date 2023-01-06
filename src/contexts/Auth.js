@@ -1,6 +1,9 @@
 import { useState, createContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { SIGNED_IN_EMAIL_KEY } from "../config";
+
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const AuthContext = createContext({
   isUserLoggedIn: false,
@@ -13,9 +16,29 @@ export const AuthProvider = ({ children }) => {
 
   const [email, setEmail] = useState("");
 
-  const signUserIn = (email) => {
-    setEmail(email);
-    localStorage.setItem(SIGNED_IN_EMAIL_KEY, JSON.stringify(email));
+  const signUserIn = async ({ email, password }) => {
+    try {
+      let response = await fetch(BASE_URL, "/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ email, password }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      response = await response.json();
+
+      if (response) {
+        // TODO: Set token somewhere
+        setEmail(email);
+        localStorage.setItem(SIGNED_IN_EMAIL_KEY, JSON.stringify(email));
+      } else {
+        // TODO: Do something here
+      }
+    } catch (err) {
+      toast.error(err);
+      console.error("Could not sign user in", err);
+    }
   };
 
   const signUserOut = () => {
@@ -23,6 +46,52 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem(SIGNED_IN_EMAIL_KEY);
   };
 
+  const changePassword = async (
+    { email, newPassword, resetToken },
+    callback
+  ) => {
+    try {
+      let response = await fetch(BASE_URL, "/auth/change-password", {
+        method: "POST",
+        body: JSON.stringify({ email, newPassword, resetToken }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      response = await response.json();
+
+      if (response) {
+        callback(true);
+      }
+    } catch (err) {
+      callback(false);
+      console.error("Could not reset users password: ", err);
+    }
+  };
+
+  const resetUsersPassword = async (email, callback) => {
+    try {
+      let response = await fetch(BASE_URL, "/auth/reset-password", {
+        method: "POST",
+        body: JSON.stringify({ email }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      response = await response.json();
+
+      if (response) {
+        callback(true);
+      }
+    } catch (err) {
+      callback(false);
+      console.error("Could not reset users password: ", err);
+    }
+  };
+
+  // TODO: Change useeffect to be based on token and not email
   useEffect(() => {
     if (email) {
       setIsUserLoggedIn(true);
@@ -44,7 +113,14 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ isUserLoggedIn, signUserIn, email, signUserOut }}
+      value={{
+        isUserLoggedIn,
+        signUserIn,
+        email,
+        signUserOut,
+        resetUsersPassword,
+        changePassword,
+      }}
     >
       {children}
     </AuthContext.Provider>
