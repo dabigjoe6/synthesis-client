@@ -33,6 +33,16 @@ const Actions = styled.div`
   justify-content: flex-end;
 `;
 
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex: 2;
+`;
+
+const Space = styled.div`
+  min-width: 10px;
+`
+
 const SubscriptionItem = ({ data }) => {
   const { name, url, _id } = data;
 
@@ -91,9 +101,11 @@ const SubscriptionItem = ({ data }) => {
 
   return (
     <Container>
-      <Text>
-        {handleUrl(url)} - <Text fontSize="sm">{name}</Text>
-      </Text>
+      <Wrapper>
+        <Text>{handleUrl(url)}</Text>
+        <Space />
+        <Text fontSize="sm">{name}</Text>
+      </Wrapper>
       <Actions>
         <UnsubscribeButton
           transparent

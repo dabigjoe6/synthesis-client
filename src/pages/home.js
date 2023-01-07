@@ -60,10 +60,10 @@ const Home = () => {
             8:00 AM UTC everyday (This will be customizable in future updates)
           </Text>
           <Spacing />
-          {subscriptions.map((item) => (
+          {subscriptions && subscriptions.map((item) => (
             <SubscriptionItem
-              key={item.subscription.url}
-              data={item.subscription}
+              key={item?.subscription?.url}
+              data={item?.subscription}
             />
           ))}
           <Spacing />

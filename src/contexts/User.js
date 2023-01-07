@@ -30,6 +30,8 @@ export const UserProvider = ({ children }) => {
 
       const _subscriptions = (await response.json())?.subscriptions || [];
       setSubscriptions(_subscriptions);
+      setDataIsLoading(false);
+
     } catch (err) {
       setDataIsLoading(false);
       console.error("Could not get user subscriptions: ", err);
@@ -95,9 +97,8 @@ export const UserProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    if (user && user.subscriptions) {
-      setSubscriptions(user.subscriptions);
-      setDataIsLoading(false);
+    if (user) {
+      _getUserSubscriptions()
     }
   }, [user]);
 

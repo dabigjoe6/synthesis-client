@@ -14,15 +14,17 @@ const handleFontSize = (fontSize) => {
 };
 
 const handleTextAlignment = (align) => {
-  switch(align) {
+  switch (align) {
     case "center":
-      return "center"
+      return "center";
     default:
-      return ""
+      return "";
   }
-}
+};
 
-const Text = styled.text`
+const Text = styled.p`
+  margin-bottom: 0px;
+  margin: 0px;
   color: white;
   font-size: ${({ fontSize }) => handleFontSize(fontSize)};
   font-weight: ${({ bold }) => (bold ? "bold" : "normal")};
