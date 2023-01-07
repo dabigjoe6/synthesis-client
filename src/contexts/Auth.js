@@ -17,7 +17,6 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState("");
   const [user, setUser] = useState(null);
 
-
   const registerUser = async ({ email, password }, callback) => {
     try {
       let response = await fetch(BASE_URL + "/auth/register", {
@@ -88,13 +87,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   const changePassword = async (
-    { email, newPassword, resetToken },
+    { email, newPassword, resetPasswordToken },
     callback
   ) => {
     try {
       let response = await fetch(BASE_URL + "/auth/change-password", {
         method: "POST",
-        body: JSON.stringify({ email, newPassword, resetToken }),
+        body: JSON.stringify({ email, newPassword, resetPasswordToken }),
         headers: {
           "Content-Type": "application/json",
         },
@@ -102,8 +101,10 @@ export const AuthProvider = ({ children }) => {
 
       response = await response.json();
 
-      if (response) {
+      if (response && response.status === 200) {
         callback(true);
+      } else {
+        callback(false);
       }
     } catch (err) {
       callback(false);
@@ -123,8 +124,10 @@ export const AuthProvider = ({ children }) => {
 
       response = await response.json();
 
-      if (response) {
+      if (response && response.status === 200) {
         callback(true);
+      } else {
+        callback(false);
       }
     } catch (err) {
       callback(false);

@@ -22,7 +22,7 @@ const ChangePasswordSchema = Yup.object().shape({
 const ChangePassword = () => {
   const navigate = useNavigate();
 
-  const { email, reesetToken } = useParams();
+  const { email, resetPasswordToken } = useParams();
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,7 +30,7 @@ const ChangePassword = () => {
 
   const handleChangePassword = ({ newPassword }) => {
     setIsLoading(true);
-    changePassword({ email, newPassword, reesetToken }, (success) => {
+    changePassword({ email, newPassword, resetPasswordToken }, (success) => {
       setIsLoading(false);
       if (success) {
         toast.success("Password changed successfully");

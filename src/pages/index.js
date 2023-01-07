@@ -38,7 +38,7 @@ const Router = () => {
                 <Route path="/sign-up" element={<SignUp />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route
-                  path="/change-password/:email/:resetToken"
+                  path="/change-password/:email/:resetPasswordToken"
                   element={<ChangePassword />}
                 />
                 <Route element={<RequireAuth />}>
