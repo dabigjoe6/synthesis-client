@@ -7,6 +7,7 @@ import { Layout } from "../components";
 import Home from "./home";
 
 import Login from "./auth/login";
+import SignUp from "./auth/sign-up";
 import ForgotPassword from "./auth/forgot-password";
 import ChangePassword from "./auth/change-password";
 import RequireAuth from "./require-auth";
@@ -34,6 +35,7 @@ const Router = () => {
             <Routes>
               <Route element={<Layout />}>
                 <Route path="/login" element={<Login />} />
+                <Route path="/sign-up" element={<SignUp />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route
                   path="/change-password/:email/:resetToken"

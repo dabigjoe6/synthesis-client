@@ -95,10 +95,15 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
   const handleSubscription = useCallback(({ service, author }) => {
     try {
       setIsLoading(true);
-      subscribeToAuthor(service, author);
-      setIsLoading(false);
-      handleClose();
-      toast.success("Subscription succesfull!");
+      subscribeToAuthor(service, author, (success) => {
+        setIsLoading(false);
+        if (success) {
+          toast.success("Subscription succesful!");
+          handleClose();
+        } else {
+          throw new Error()
+        }
+      });
     } catch (err) {
       console.error(err, "Failed to subscribe to " + service);
       toast.error("Failed to subscribe");

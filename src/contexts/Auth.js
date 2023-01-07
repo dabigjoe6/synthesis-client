@@ -1,7 +1,7 @@
 import { useState, createContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { SIGNED_IN_EMAIL_KEY } from "../config";
+import { SIGNED_IN_TOKEN, SIGNED_IN_USER_KEY } from "../config";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -14,11 +14,45 @@ export const AuthProvider = ({ children }) => {
   const location = useLocation();
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
 
-  const [email, setEmail] = useState("");
+  const [token, setToken] = useState("");
+  const [user, setUser] = useState(null);
 
-  const signUserIn = async ({ email, password }) => {
+
+  const registerUser = async ({ email, password }, callback) => {
     try {
-      let response = await fetch(BASE_URL, "/auth/login", {
+      let response = await fetch(BASE_URL + "/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      response = await response.json();
+
+      if (response && (response.status === 201 || response.status === 200)) {
+        setToken(response.token);
+        setUser(response.user);
+        localStorage.setItem(SIGNED_IN_USER_KEY, JSON.stringify(response.user));
+        localStorage.setItem(SIGNED_IN_TOKEN, JSON.stringify(response.token));
+        callback(true);
+        toast.success("Account created succesfully");
+      } else if (response) {
+        callback(false);
+        toast.error(response.message);
+      } else {
+        throw new Error("Something went wrong");
+      }
+    } catch (err) {
+      callback(false);
+      toast.error(err);
+      console.error("Could not register user", err);
+    }
+  };
+
+  const signUserIn = async ({ email, password }, callback) => {
+    try {
+      let response = await fetch(BASE_URL + "/auth/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: {
@@ -28,22 +62,29 @@ export const AuthProvider = ({ children }) => {
 
       response = await response.json();
 
-      if (response) {
-        // TODO: Set token somewhere
-        setEmail(email);
-        localStorage.setItem(SIGNED_IN_EMAIL_KEY, JSON.stringify(email));
+      if (response && (response.status === 201 || response.status === 200)) {
+        setToken(response.token);
+        setUser(response.user);
+        localStorage.setItem(SIGNED_IN_USER_KEY, JSON.stringify(response.user));
+        localStorage.setItem(SIGNED_IN_TOKEN, JSON.stringify(response.token));
+        callback(true);
+      } else if (response) {
+        callback(false);
+        toast.error(response.message);
       } else {
-        // TODO: Do something here
+        throw new Error("Something went wrong");
       }
     } catch (err) {
+      callback(false);
       toast.error(err);
       console.error("Could not sign user in", err);
     }
   };
 
   const signUserOut = () => {
-    setEmail("");
-    localStorage.removeItem(SIGNED_IN_EMAIL_KEY);
+    setToken(null);
+    setUser(null);
+    localStorage.clear();
   };
 
   const changePassword = async (
@@ -51,7 +92,7 @@ export const AuthProvider = ({ children }) => {
     callback
   ) => {
     try {
-      let response = await fetch(BASE_URL, "/auth/change-password", {
+      let response = await fetch(BASE_URL + "/auth/change-password", {
         method: "POST",
         body: JSON.stringify({ email, newPassword, resetToken }),
         headers: {
@@ -72,7 +113,7 @@ export const AuthProvider = ({ children }) => {
 
   const resetUsersPassword = async (email, callback) => {
     try {
-      let response = await fetch(BASE_URL, "/auth/reset-password", {
+      let response = await fetch(BASE_URL + "/auth/reset-password", {
         method: "POST",
         body: JSON.stringify({ email }),
         headers: {
@@ -91,32 +132,38 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // TODO: Change useeffect to be based on token and not email
   useEffect(() => {
-    if (email) {
+    if (token) {
       setIsUserLoggedIn(true);
     } else {
       setIsUserLoggedIn(false);
     }
-  }, [email]);
+    console.log("Token", token);
+  }, [token]);
 
   useEffect(() => {
-    let _email = localStorage.getItem(SIGNED_IN_EMAIL_KEY);
-    setEmail(JSON.parse(_email));
+    let _token = localStorage.getItem(SIGNED_IN_TOKEN);
+    setToken(JSON.parse(_token));
+
+    let _user = localStorage.getItem(SIGNED_IN_USER_KEY);
+    setUser(JSON.parse(_user));
   }, []);
 
   useEffect(() => {
     if (isUserLoggedIn) {
-      navigate(location.state.from || "/", { replace: true });
+      const navigateTo = location?.state?.from || "/";
+      navigate(navigateTo, { replace: true });
     }
   }, [isUserLoggedIn]);
 
   return (
     <AuthContext.Provider
       value={{
+        user,
+        registerUser,
         isUserLoggedIn,
         signUserIn,
-        email,
+        token,
         signUserOut,
         resetUsersPassword,
         changePassword,

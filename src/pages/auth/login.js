@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Input, Button, Text } from "../../components";
@@ -15,12 +15,21 @@ const Login = () => {
   const navigate = useNavigate();
   const { signUserIn } = useContext(AuthContext);
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleSignIn = (loginDetails) => {
-    signUserIn(loginDetails);
+    setIsLoading(true);
+    signUserIn(loginDetails, () => {
+      setIsLoading(false);
+    });
   };
 
   const handleForgotPassword = () => {
-    navigate("/forgot-password")
+    navigate("/forgot-password");
+  };
+
+  const handleSignUp = () => {
+    navigate("/sign-up");
   };
 
   const formik = useFormik({
@@ -64,9 +73,15 @@ const Login = () => {
           transparent
         />
         <Button
+          onClick={handleSignUp}
+          label="Create a new account"
+          transparent
+        />
+        <Button
           onClick={formik.handleSubmit}
           label="Continue"
           disabled={!formik.isValid}
+          loading={isLoading}
         />
       </Form>
     </Container>

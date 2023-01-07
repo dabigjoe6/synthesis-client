@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Input, Button, Text } from "../../components";
@@ -24,10 +24,14 @@ const ChangePassword = () => {
 
   const { email, reesetToken } = useParams();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { changePassword } = useContext(AuthContext);
 
   const handleChangePassword = ({ newPassword }) => {
+    setIsLoading(true);
     changePassword({ email, newPassword, reesetToken }, (success) => {
+      setIsLoading(false);
       if (success) {
         toast.success("Password changed successfully");
         navigate("/login");
@@ -76,6 +80,7 @@ const ChangePassword = () => {
           onClick={formik.handleSubmit}
           label="Continue"
           disabled={!formik.isValid}
+          loading={isLoading}
         />
       </Form>
     </Container>
