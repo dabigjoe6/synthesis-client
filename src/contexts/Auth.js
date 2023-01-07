@@ -138,7 +138,6 @@ export const AuthProvider = ({ children }) => {
     } else {
       setIsUserLoggedIn(false);
     }
-    console.log("Token", token);
   }, [token]);
 
   useEffect(() => {
