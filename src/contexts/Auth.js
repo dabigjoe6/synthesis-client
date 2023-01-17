@@ -80,6 +80,37 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const signUserInWithGoogle = async (code, callback) => {
+    try {
+      let response = await fetch(BASE_URL + "/auth/oauth_login", {
+        method: "POST",
+        body: JSON.stringify({ code }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      response = await response.json();
+
+      if (response && (response.status === 201 || response.status === 200)) {
+        setToken(response.token);
+        setUser(response.user);
+        localStorage.setItem(SIGNED_IN_USER_KEY, JSON.stringify(response.user));
+        localStorage.setItem(SIGNED_IN_TOKEN, JSON.stringify(response.token));
+        callback(true);
+      } else if (response) {
+        callback(false);
+        toast.error(response.message);
+      } else {
+        throw new Error("Something went wrong");
+      }
+    } catch (err) {
+      callback(false);
+      toast.error(err);
+      console.error("Could not sign user in", err);
+    }
+  }
+
   const signUserOut = () => {
     setToken(null);
     setUser(null);
@@ -169,6 +200,7 @@ export const AuthProvider = ({ children }) => {
         signUserOut,
         resetUsersPassword,
         changePassword,
+        signUserInWithGoogle
       }}
     >
       {children}
