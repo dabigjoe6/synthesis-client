@@ -1,18 +1,69 @@
-import styled from 'styled-components';
-import { COLORS } from '../../../config';
-const Container = styled.div`
+import styled from "styled-components";
+import { Text as TextComponent } from "../../../components";
+import morningLogo from '../../../morning.png';
+import { COLORS } from "../../../config";
+import { useNavigate } from "react-router-dom";
+const Body = styled.div`
   display: flex;
   align-items: center;
   background-color: ${COLORS.BACKGROUND_LIGHT};
   flex-direction: column;
   border-radius: 3px;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-bottom: 30px;
   width: 90%;
   max-width: 400px;
   padding-right: 20px;
   padding-left: 20px;
   box-sizing: border-box;
 `;
+
+const IconWrapper = styled.div`
+  width: 100%;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-right: 40px;
+  padding-left: 40px;
+  box-sizing: border-box;
+  pointer: cursor;
+`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  max-width: 400px;
+  align-items: center;
+`;
+
+const Logo = styled.img`
+  width: 120px;
+  height: 50px;
+  object-fit: cover;
+  margin-bottom: 20px;
+`
+
+const Text = styled(TextComponent)`
+  text-align: center;
+`
+
+const Container = ({ children }) => {
+  const navigate = useNavigate();
+
+  const handleIconClick = () => {
+    navigate('/login');
+  }
+
+  return (
+    <Wrapper>
+      <IconWrapper onClick={handleIconClick}>
+        <Logo src={morningLogo} />
+        <Text>Email digests of the most important articles from your favourite authors</Text>
+      </IconWrapper>
+      <Body>{children}</Body>
+    </Wrapper>
+  );
+};
 
 export default Container;

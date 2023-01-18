@@ -13,9 +13,15 @@ import { AuthContext } from "../../contexts/Auth";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from '@react-oauth/google';
 import styled from "styled-components";
+import { COLORS } from "../../config";
 
 const CreateNewAccountBtn = styled(Button)`
-  margin-top: 0px;
+  margin-top: 10px;
+  color: ${COLORS.SECONDARY};
+`;
+
+const ForgotPasswordBtn = styled(Button)`
+  color: grey;
 `;
 
 const LoginSchema = Yup.object().shape({
@@ -121,7 +127,7 @@ const Login = () => {
         label="No account? Create one"
         transparent
       />
-      <Button
+      <ForgotPasswordBtn
         onClick={handleForgotPassword}
         label="Forgot password?"
         transparent

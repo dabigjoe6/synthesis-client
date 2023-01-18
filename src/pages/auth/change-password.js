@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Input, Button, Text } from "../../components";
-import { Container, Form, H4, H2 } from "./components";
+import { Input, Button } from "../../components";
+import { Container, Form, H4 } from "./components";
 import { AuthContext } from "../../contexts/Auth";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -52,10 +52,6 @@ const ChangePassword = () => {
 
   return (
     <Container>
-      <H2>MorningBrew</H2>
-      <Text fontSize="md" align="center">
-        Email digest of the most important articles from your favourite authors
-      </Text>
       <H4>Change Password</H4>
       <Form>
         <Input

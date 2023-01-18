@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Input, Button, Text } from "../../components";
-import { Container, Form, H4, H2 } from "./components";
+import { Input, Button, Text, Spacing } from "../../components";
+import { Container, Form, H4 } from "./components";
 import { AuthContext } from "../../contexts/Auth";
 import { toast } from "react-toastify";
 import styled from "styled-components";
@@ -53,15 +53,16 @@ const ForgotPassword = () => {
 
   return (
     <Container>
-      <H2>MorningBrew</H2>
-      <Text fontSize="md" align="center">
-        Email digest of the most important articles from your favourite authors
-      </Text>
       {hasResentLinkSent ? (
         resetLinkSent()
       ) : (
         <>
           <H4>Reset Password</H4>
+          <Text fontSize="md" align="center">
+            To reset your password a reset link will be sent to your registered
+            e-mail address
+          </Text>
+          <Spacing />
           <Form>
             <Input
               label="Email address"
