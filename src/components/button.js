@@ -16,13 +16,14 @@ const Container = styled.button`
   background: ${({ disabled, transparent }) =>
     handleBackground({ disabled, transparent })};
   border-radius: 5px;
-  color: ${COLORS.BACKGROUND};
+  color: ${({ transparent }) =>
+    transparent ? "white" : COLORS.BACKGROUND_LIGHT};
   border-width: 0;
 `;
 
 const Button = ({ label, onClick, disabled, loading, ...props }) => {
   const handleClick = useCallback(() => {
-    if (!disabled) {
+    if (!disabled && !loading) {
       onClick();
     }
   }, [disabled]);

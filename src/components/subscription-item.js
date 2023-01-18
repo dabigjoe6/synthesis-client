@@ -1,4 +1,4 @@
-import { useContext, useCallback } from "react";
+import { useContext, useCallback, useState } from "react";
 import styled from "styled-components";
 import { UserContext } from "../contexts/User";
 import Text from "./text";
@@ -33,11 +33,23 @@ const Actions = styled.div`
   justify-content: flex-end;
 `;
 
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex: 2;
+`;
+
+const Space = styled.div`
+  min-width: 10px;
+`
+
 const SubscriptionItem = ({ data }) => {
   const { name, url, _id } = data;
 
   const { unsubscribeFromAuthor } = useContext(UserContext);
   const { displayDialog } = useContext(DialogContext);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleUrl = (url) => {
     const mediumUsernameRegex = /(?:@).*/;
@@ -67,8 +79,15 @@ const SubscriptionItem = ({ data }) => {
   const handleUnsubscription = useCallback(async () => {
     const primaryAction = async () => {
       try {
-        await unsubscribeFromAuthor(_id);
-        toast.success("Succesfully unsubscribed");
+        setIsLoading(true);
+        await unsubscribeFromAuthor(_id, (success) => {
+          setIsLoading(false);
+          if (success) {
+            toast.success("Succesfully unsubscribed");
+          } else {
+            toast.error("Could not unsubscribe");
+          }
+        });
       } catch (err) {
         toast.error("Something went wrong");
         console.error("Could not unsubscribe " + err);
@@ -82,13 +101,16 @@ const SubscriptionItem = ({ data }) => {
 
   return (
     <Container>
-      <Text>
-        {handleUrl(url)} - <Text fontSize="sm">{name}</Text>
-      </Text>
+      <Wrapper>
+        <Text>{handleUrl(url)}</Text>
+        <Space />
+        <Text fontSize="sm">{name}</Text>
+      </Wrapper>
       <Actions>
         <UnsubscribeButton
           transparent
           label="unsubscribe"
+          loading={isLoading}
           onClick={handleUnsubscription}
         />
       </Actions>
