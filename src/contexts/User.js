@@ -28,10 +28,17 @@ export const UserProvider = ({ children }) => {
         },
       });
 
-      const _subscriptions = (await response.json())?.subscriptions || [];
-      setSubscriptions(_subscriptions);
-      setDataIsLoading(false);
+      const data = await response.json();
 
+      if (!response.ok) {
+        if (response.status === 404) throw new Error("Not found", data.message);
+        else if (response.status === 401)
+          throw new Error("Unauthorized", data.message);
+        else throw new Error(data.message);
+      }
+
+      setSubscriptions(data.subscriptions || []);
+      setDataIsLoading(false);
     } catch (err) {
       setDataIsLoading(false);
       console.error("Could not get user subscriptions: ", err);
@@ -51,15 +58,19 @@ export const UserProvider = ({ children }) => {
 
       const data = await response.json();
 
-      if (response && response.status === 200) {
-        setSubscriptions(data.subscriptions);
-        cb(true);
-      } else if (response && response.status === 403) {
-        toast.error("Session expired, please sign in");
-        signUserOut();
-        cb(false);
+      if (!response.ok) {
+        if (response.status === 404) throw new Error("Not found", data.message);
+        else if (response.status === 401)
+          throw new Error("Unauthorized", data.message);
+        else throw new Error(data.message);
       }
+
+      setSubscriptions(data.subscriptions);
+      cb(true);
     } catch (err) {
+      toast.error(err.message || err);
+      signUserOut();
+      cb(false);
       console.error("Could not unsubscribe: ", err);
     }
   };
@@ -71,7 +82,7 @@ export const UserProvider = ({ children }) => {
         author,
       };
 
-      let response = await fetch(BASE_URL + "/subscribe/" + service, {
+      const response = await fetch(BASE_URL + "/subscribe/" + service, {
         method: "POST",
         body: JSON.stringify(params),
         headers: {
@@ -80,17 +91,20 @@ export const UserProvider = ({ children }) => {
         },
       });
 
-      response = await response.json();
+      const data = await response.json();
 
-      if (response && response.status === 200) {
-        setSubscriptions(response.subscriptions);
-        cb(true);
-      } else if (response && response.status === 403) {
-        toast.error("Session expired, please sign in");
-        signUserOut();
-        cb(false);
+      if (!response.ok) {
+        if (response.status === 404) throw new Error("Not found", data.message);
+        else if (response.status === 401)
+          throw new Error("Unauthorized", data.message);
+        else throw new Error(data.message);
       }
+
+      setSubscriptions(data.subscriptions);
+      cb(true);
     } catch (err) {
+      toast.error(err.message || err);
+      signUserOut();
       cb(false);
       console.error("Could not subscribe to service: ", err);
     }
@@ -98,7 +112,7 @@ export const UserProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      _getUserSubscriptions()
+      _getUserSubscriptions();
     }
   }, [user]);
 

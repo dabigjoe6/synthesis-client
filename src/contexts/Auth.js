@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
 
   const registerUser = async ({ email, password }, callback) => {
     try {
-      let response = await fetch(BASE_URL + "/auth/register", {
+      const response = await fetch(BASE_URL + "/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,31 +27,31 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ email, password }),
       });
 
-      response = await response.json();
+      const data = await response.json();
 
-      if (response && (response.status === 201 || response.status === 200)) {
-        setToken(response.token);
-        setUser(response.user);
-        localStorage.setItem(SIGNED_IN_USER_KEY, JSON.stringify(response.user));
-        localStorage.setItem(SIGNED_IN_TOKEN, JSON.stringify(response.token));
-        callback(true);
-        toast.success("Account created succesfully");
-      } else if (response) {
-        callback(false);
-        toast.error(response.message);
-      } else {
-        throw new Error("Something went wrong");
+      if (!response.ok) {
+        if (response.status === 404) throw new Error("Not found", data.message);
+        else if (response.status === 401)
+          throw new Error("Unauthorized", data.message);
+        else throw new Error(data.message);
       }
+
+      setToken(data.token);
+      setUser(data.user);
+      localStorage.setItem(SIGNED_IN_USER_KEY, JSON.stringify(data.user));
+      localStorage.setItem(SIGNED_IN_TOKEN, JSON.stringify(data.token));
+      callback(true);
+      toast.success("Account created succesfully");
     } catch (err) {
       callback(false);
-      toast.error(err);
+      toast.error(err.message || err);
       console.error("Could not register user", err);
     }
   };
 
   const signUserIn = async ({ email, password }, callback) => {
     try {
-      let response = await fetch(BASE_URL + "/auth/login", {
+      const response = await fetch(BASE_URL + "/auth/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
         headers: {
@@ -59,30 +59,30 @@ export const AuthProvider = ({ children }) => {
         },
       });
 
-      response = await response.json();
+      const data = await response.json();
 
-      if (response && (response.status === 201 || response.status === 200)) {
-        setToken(response.token);
-        setUser(response.user);
-        localStorage.setItem(SIGNED_IN_USER_KEY, JSON.stringify(response.user));
-        localStorage.setItem(SIGNED_IN_TOKEN, JSON.stringify(response.token));
-        callback(true);
-      } else if (response) {
-        callback(false);
-        toast.error(response.message);
-      } else {
-        throw new Error("Something went wrong");
+      if (!response.ok) {
+        if (response.status === 404) throw new Error("Not found", data.message);
+        else if (response.status === 401)
+          throw new Error("Unauthorized", data.message);
+        else throw new Error(data.message);
       }
+
+      setToken(data.token);
+      setUser(data.user);
+      localStorage.setItem(SIGNED_IN_USER_KEY, JSON.stringify(data.user));
+      localStorage.setItem(SIGNED_IN_TOKEN, JSON.stringify(data.token));
+      callback(true);
     } catch (err) {
       callback(false);
-      toast.error(err);
+      toast.error(err.message || err);
       console.error("Could not sign user in", err);
     }
   };
 
   const signUserInWithGoogle = async (code, callback) => {
     try {
-      let response = await fetch(BASE_URL + "/auth/oauth_login", {
+      const response = await fetch(BASE_URL + "/auth/oauth_login", {
         method: "POST",
         body: JSON.stringify({ code }),
         headers: {
@@ -90,26 +90,26 @@ export const AuthProvider = ({ children }) => {
         },
       });
 
-      response = await response.json();
+      const data = await response.json();
 
-      if (response && (response.status === 201 || response.status === 200)) {
-        setToken(response.token);
-        setUser(response.user);
-        localStorage.setItem(SIGNED_IN_USER_KEY, JSON.stringify(response.user));
-        localStorage.setItem(SIGNED_IN_TOKEN, JSON.stringify(response.token));
-        callback(true);
-      } else if (response) {
-        callback(false);
-        toast.error(response.message);
-      } else {
-        throw new Error("Something went wrong");
+      if (!response.ok) {
+        if (response.status === 404) throw new Error("Not found", data.message);
+        else if (response.status === 401)
+          throw new Error("Unauthorized", data.message);
+        else throw new Error(data.message);
       }
+
+      setToken(data.token);
+      setUser(data.user);
+      localStorage.setItem(SIGNED_IN_USER_KEY, JSON.stringify(data.user));
+      localStorage.setItem(SIGNED_IN_TOKEN, JSON.stringify(data.token));
+      callback(true);
     } catch (err) {
       callback(false);
-      toast.error(err);
+      toast.error(err.message || err);
       console.error("Could not sign user in", err);
     }
-  }
+  };
 
   const signUserOut = () => {
     setToken(null);
@@ -122,7 +122,7 @@ export const AuthProvider = ({ children }) => {
     callback
   ) => {
     try {
-      let response = await fetch(BASE_URL + "/auth/change-password", {
+      const response = await fetch(BASE_URL + "/auth/change-password", {
         method: "POST",
         body: JSON.stringify({ email, newPassword, resetPasswordToken }),
         headers: {
@@ -130,13 +130,16 @@ export const AuthProvider = ({ children }) => {
         },
       });
 
-      response = await response.json();
+      const data = await response.json();
 
-      if (response && response.status === 200) {
-        callback(true);
-      } else {
-        callback(false);
+      if (!response.ok) {
+        if (response.status === 404) throw new Error("Not found", data.message);
+        else if (response.status === 401)
+          throw new Error("Unauthorized", data.message);
+        else throw new Error(data.message);
       }
+
+      callback(true);
     } catch (err) {
       callback(false);
       console.error("Could not reset users password: ", err);
@@ -145,7 +148,7 @@ export const AuthProvider = ({ children }) => {
 
   const resetUsersPassword = async (email, callback) => {
     try {
-      let response = await fetch(BASE_URL + "/auth/reset-password", {
+      const response = await fetch(BASE_URL + "/auth/reset-password", {
         method: "POST",
         body: JSON.stringify({ email }),
         headers: {
@@ -153,13 +156,16 @@ export const AuthProvider = ({ children }) => {
         },
       });
 
-      response = await response.json();
+      const data = await response.json();
 
-      if (response && response.status === 200) {
-        callback(true);
-      } else {
-        callback(false);
+      if (!response.ok) {
+        if (response.status === 404) throw new Error("Not found", data.message);
+        else if (response.status === 401)
+          throw new Error("Unauthorized", data.message);
+        else throw new Error(data.message);
       }
+
+      callback(true);
     } catch (err) {
       callback(false);
       console.error("Could not reset users password: ", err);
@@ -200,7 +206,7 @@ export const AuthProvider = ({ children }) => {
         signUserOut,
         resetUsersPassword,
         changePassword,
-        signUserInWithGoogle
+        signUserInWithGoogle,
       }}
     >
       {children}
