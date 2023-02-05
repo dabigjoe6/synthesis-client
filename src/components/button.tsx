@@ -1,15 +1,27 @@
-import { useCallback } from "react";
+import * as React from "react";
 import styled from "styled-components";
-import { COLORS } from "../config";
+import { Colors } from "../config";
 
-const handleBackground = ({ disabled, transparent }) => {
+interface ButtonProps {
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+  loading?: boolean;
+}
+
+const handleBackground = ({ disabled, transparent }: {
+  disabled?: boolean;
+  transparent?: boolean;
+}) => {
   if (disabled) return "grey";
   if (transparent) return "transparent";
 
-  return COLORS.PRIMARY;
+  return Colors.PRIMARY;
 };
 
-const Container = styled.button`
+const Container = styled.button<{
+  transparent?: boolean;
+}>`
   width: 100%;
   margin-top: 20px;
   height: 35px;
@@ -17,12 +29,12 @@ const Container = styled.button`
     handleBackground({ disabled, transparent })};
   border-radius: 5px;
   color: ${({ transparent }) =>
-    transparent ? "white" : COLORS.BACKGROUND_LIGHT};
+    transparent ? "white" : Colors.BACKGROUND_LIGHT};
   border-width: 0;
 `;
 
-const Button = ({ label, onClick, disabled, loading, ...props }) => {
-  const handleClick = useCallback(() => {
+const Button = ({ label, onClick, disabled, loading, ...props }: ButtonProps) => {
+  const handleClick = React.useCallback(() => {
     if (!disabled && !loading) {
       onClick();
     }

@@ -1,23 +1,56 @@
-import { useState, createContext, useEffect } from "react";
+import * as React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { SIGNED_IN_TOKEN, SIGNED_IN_USER_KEY } from "../config";
+import { StatusCallback } from "../types.js";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-export const AuthContext = createContext({
+export interface UserI {
+  email: string;
+}
+
+interface ResetPassword { email: string, newPassword: string, resetPasswordToken: string }
+
+export interface AuthContextI {
+  isUserLoggedIn: boolean;
+  user: UserI | null;
+  token: string | null;
+  registerUser: (loginDetails: LoginDetails, callback: StatusCallback) => void;
+  signUserIn: (loginDetails: LoginDetails, callback: StatusCallback) => void;
+  signUserOut: () => void;
+  resetUsersPassword: (email: string, callback: StatusCallback) => void;
+  changePassword: (resetPasswordDetails: ResetPassword, callback: StatusCallback) => void;
+  signUserInWithGoogle: (code: string, callback: StatusCallback) => void;
+}
+
+export const AuthContext = React.createContext<AuthContextI>({
   isUserLoggedIn: false,
+  user: null,
+  token: null,
+  registerUser: () => { },
+  signUserIn: () => { },
+  signUserOut: () => { },
+  resetUsersPassword: () => { },
+  changePassword: () => { },
+  signUserInWithGoogle: () => { }
 });
 
-export const AuthProvider = ({ children }) => {
+interface LoginDetails {
+  email: string;
+  password: string;
+}
+
+
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const [isUserLoggedIn, setIsUserLoggedIn] = React.useState(false);
 
-  const [token, setToken] = useState("");
-  const [user, setUser] = useState(null);
+  const [token, setToken] = React.useState(null);
+  const [user, setUser] = React.useState(null);
 
-  const registerUser = async ({ email, password }, callback) => {
+  const registerUser = async ({ email, password }: LoginDetails, callback: StatusCallback) => {
     try {
       const response = await fetch(BASE_URL + "/auth/register", {
         method: "POST",
@@ -49,7 +82,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signUserIn = async ({ email, password }, callback) => {
+  const signUserIn = async ({ email, password }: LoginDetails, callback: StatusCallback) => {
     try {
       const response = await fetch(BASE_URL + "/auth/login", {
         method: "POST",
@@ -80,7 +113,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const signUserInWithGoogle = async (code, callback) => {
+  const signUserInWithGoogle = async (code: string, callback: StatusCallback) => {
     try {
       const response = await fetch(BASE_URL + "/auth/oauth_login", {
         method: "POST",
@@ -118,8 +151,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const changePassword = async (
-    { email, newPassword, resetPasswordToken },
-    callback
+    { email, newPassword, resetPasswordToken }: ResetPassword,
+    callback: StatusCallback
   ) => {
     try {
       const response = await fetch(BASE_URL + "/auth/change-password", {
@@ -146,7 +179,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const resetUsersPassword = async (email, callback) => {
+  const resetUsersPassword = async (email: string, callback: StatusCallback) => {
     try {
       const response = await fetch(BASE_URL + "/auth/reset-password", {
         method: "POST",
@@ -172,7 +205,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (token) {
       setIsUserLoggedIn(true);
     } else {
@@ -180,15 +213,15 @@ export const AuthProvider = ({ children }) => {
     }
   }, [token]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     let _token = localStorage.getItem(SIGNED_IN_TOKEN);
-    setToken(JSON.parse(_token));
+    _token && setToken(JSON.parse(_token));
 
     let _user = localStorage.getItem(SIGNED_IN_USER_KEY);
-    setUser(JSON.parse(_user));
+    _user && setUser(JSON.parse(_user));
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isUserLoggedIn) {
       const navigateTo = location?.state?.from || "/";
       navigate(navigateTo, { replace: true });

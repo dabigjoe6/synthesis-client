@@ -1,6 +1,12 @@
+import * as React from 'react';
 import styled from "styled-components";
 import Text from "./text";
 import TextInput from "./text-input";
+
+interface InputProps {
+  label: string;
+  error: string;
+}
 
 const Container = styled.div`
   display: flex;
@@ -16,7 +22,7 @@ const ErrorText = styled(Text)`
   margin-top: 5px;
 `;
 
-const Input = ({ label, error, ...props }) => {
+const Input = ({ label, error, ...props }: InputProps) => {
   return (
     <Container>
       <Text>{label}</Text>

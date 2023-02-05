@@ -1,27 +1,42 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import * as React from "react";
 import { toast } from "react-toastify";
-import { AuthContext } from "./Auth";
+import { Services } from "../config";
+import { StatusCallback } from "../types";
+import { AuthContext, UserI } from "./Auth";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-export const UserContext = createContext({
+export interface UserContextI {
+  subscriptions: string[];
+  isDataLoading: boolean;
+  user: UserI | null;
+  setSubscriptions: React.Dispatch<React.SetStateAction<never[]>>;
+  unsubscribeFromAuthor: (id: string, cb: StatusCallback) => void;
+  subscribeToAuthor: (service: Services, author: string, cb: StatusCallback) => void;
+}
+
+export const UserContext = React.createContext<UserContextI>({
   subscriptions: [],
   isDataLoading: true,
+  user: null,
+  setSubscriptions: () => { },
+  unsubscribeFromAuthor: () => { },
+  subscribeToAuthor: () => { }
 });
 
-export const UserProvider = ({ children }) => {
-  const { user, signUserOut, token } = useContext(AuthContext);
+export const UserProvider = ({ children }: { children: React.ReactNode }) => {
+  const { user, signUserOut, token } = React.useContext(AuthContext);
 
-  const [isDataLoading, setDataIsLoading] = useState(true);
+  const [isDataLoading, setDataIsLoading] = React.useState(true);
 
-  const [subscriptions, setSubscriptions] = useState([]);
+  const [subscriptions, setSubscriptions] = React.useState([]);
 
   const _getUserSubscriptions = async () => {
     setDataIsLoading(true);
     try {
       const response = await fetch(BASE_URL + "/subscribe/getSubscriptions", {
         method: "POST",
-        body: JSON.stringify({ email: user.email }),
+        body: JSON.stringify({ email: user?.email }),
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -46,11 +61,11 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const unsubscribeFromAuthor = async (id, cb) => {
+  const unsubscribeFromAuthor = async (id: string, cb: StatusCallback) => {
     try {
       const response = await fetch(BASE_URL + "/subscribe/unsubscribe", {
         method: "POST",
-        body: JSON.stringify({ email: user.email, subscriptionIds: [id] }),
+        body: JSON.stringify({ email: user?.email, subscriptionIds: [id] }),
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
@@ -77,10 +92,10 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  const subscribeToAuthor = async (service, author, cb) => {
+  const subscribeToAuthor = async (service: Services, author: string, cb: StatusCallback) => {
     try {
       const params = {
-        email: user.email,
+        email: user?.email,
         author,
       };
 
@@ -113,7 +128,7 @@ export const UserProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (user) {
       _getUserSubscriptions();
     }

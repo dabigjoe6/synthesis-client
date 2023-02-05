@@ -1,8 +1,8 @@
-import { useContext, useCallback } from "react";
+import * as React from "react";
 import styled from "styled-components";
 import { DialogContext } from "../contexts/Dialog";
 import Button from "./button";
-import { COLORS } from "../config";
+import { Colors } from "../config";
 
 const Container = styled.div`
   display: flex;
@@ -24,7 +24,7 @@ const ModalContainer = styled.div`
   padding-left: 20px;
   justify-content: center;
   align-items: center;
-  background: ${COLORS.BACKGROUND};
+  background: ${Colors.BACKGROUND};
   box-shadow: rgba(102, 206, 214, 0.2) 0px 12px 28px 0px,
     rgba(102, 206, 214, 0.1) 0px 2px 4px 0px,
     rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
@@ -54,39 +54,43 @@ const Dialog = () => {
     dialogPrimaryAction,
     dialogSecondaryAction,
     resetModal,
-  } = useContext(DialogContext);
+  } = React.useContext(DialogContext);
 
-  const handlePrimaryAction = useCallback(() => {
+  const handlePrimaryAction = React.useCallback(() => {
     let primaryActionText = "Yes";
-    let action;
-    if (typeof dialogPrimaryAction.current === "object") {
-      primaryActionText = dialogPrimaryAction.current.text;
-      action = dialogPrimaryAction.current.action;
+    let action: (() => void) | undefined;
+    if (typeof dialogPrimaryAction?.current === "object") {
+      if (dialogPrimaryAction.current && dialogPrimaryAction.current.text && dialogPrimaryAction.current.action) {
+        primaryActionText = dialogPrimaryAction.current.text;
+        action = dialogPrimaryAction.current.action;
+      }
     } else {
-      action = dialogPrimaryAction.current;
+      action = dialogPrimaryAction?.current;
     }
 
     const handleAction = async () => {
-      await action();
+      action && (await action());
       resetModal();
     };
 
     return <ActionButton onClick={handleAction} label={primaryActionText} />;
   }, []);
 
-  const handleSecondaryAction = useCallback(() => {
+  const handleSecondaryAction = React.useCallback(() => {
     let secondaryActionText = "No";
-    let action;
-    if (typeof dialogSecondaryAction.current === "object") {
-      secondaryActionText = dialogSecondaryAction.current.text;
-      action = dialogSecondaryAction.current.action;
-    } else if (typeof dialogSecondaryAction.current === "function") {
+    let action: (() => void) | undefined;
+    if (typeof dialogSecondaryAction?.current === "object") {
+      if (dialogSecondaryAction.current && dialogSecondaryAction.current.text && dialogSecondaryAction.current.action) {
+        secondaryActionText = dialogSecondaryAction.current.text;
+        action = dialogSecondaryAction.current.action;
+      }
+    } else if (typeof dialogSecondaryAction?.current === "function") {
       action = dialogSecondaryAction.current;
     }
 
     const handleAction = async () => {
       if (action) {
-        await action();
+        action && (await action());
       }
       resetModal();
     };

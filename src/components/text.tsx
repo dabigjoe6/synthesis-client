@@ -1,6 +1,12 @@
 import styled from "styled-components";
 
-const handleFontSize = (fontSize) => {
+enum FontSize {
+  "xl" = "xl",
+  "lg" = "lg",
+  "sm" = "sm"
+}
+
+const handleFontSize = (fontSize: FontSize | undefined) => {
   switch (fontSize) {
     case "xl":
       return "2.5rem";
@@ -13,7 +19,7 @@ const handleFontSize = (fontSize) => {
   }
 };
 
-const handleTextAlignment = (align) => {
+const handleTextAlignment = (align: string | undefined) => {
   switch (align) {
     case "center":
       return "center";
@@ -22,7 +28,11 @@ const handleTextAlignment = (align) => {
   }
 };
 
-const Text = styled.p`
+const Text = styled.p<{
+  fontSize?: FontSize;
+  bold?: boolean;
+  align?: string;
+}>`
   margin-bottom: 0px;
   margin: 0px;
   color: white;
