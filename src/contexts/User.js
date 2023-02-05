@@ -32,9 +32,10 @@ export const UserProvider = ({ children }) => {
 
       if (!response.ok) {
         if (response.status === 404) throw new Error("Not found", data.message);
-        else if (response.status === 401)
-          throw new Error("Unauthorized", data.message);
-        else throw new Error(data.message);
+        else if (response.status === 401) {
+          signUserOut();
+          throw new Error("Session expired, please sign in", data.message);
+        } else throw new Error(data.message);
       }
 
       setSubscriptions(data.subscriptions || []);
@@ -60,9 +61,10 @@ export const UserProvider = ({ children }) => {
 
       if (!response.ok) {
         if (response.status === 404) throw new Error("Not found", data.message);
-        else if (response.status === 401)
-          throw new Error("Unauthorized", data.message);
-        else throw new Error(data.message);
+        else if (response.status === 401) {
+          signUserOut();
+          throw new Error("Session expired, please sign in", data.message);
+        } else throw new Error(data.message);
       }
 
       setSubscriptions(data.subscriptions);
@@ -95,9 +97,10 @@ export const UserProvider = ({ children }) => {
 
       if (!response.ok) {
         if (response.status === 404) throw new Error("Not found", data.message);
-        else if (response.status === 401)
-          throw new Error("Unauthorized", data.message);
-        else throw new Error(data.message);
+        else if (response.status === 401) {
+          signUserOut();
+          throw new Error("Session expired, please sign in", data.message);
+        } else throw new Error(data.message);
       }
 
       setSubscriptions(data.subscriptions);
