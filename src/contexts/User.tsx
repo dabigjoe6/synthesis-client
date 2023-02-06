@@ -6,8 +6,14 @@ import { AuthContext, UserI } from "./Auth";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
+export interface SubscriptionItemI {
+  name: string;
+  url: string;
+  _id: string;
+}
+
 export interface UserContextI {
-  subscriptions: string[];
+  subscriptions: { subscription: SubscriptionItemI }[];
   isDataLoading: boolean;
   user: UserI | null;
   setSubscriptions: React.Dispatch<React.SetStateAction<never[]>>;

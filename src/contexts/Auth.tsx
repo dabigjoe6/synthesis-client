@@ -10,7 +10,7 @@ export interface UserI {
   email: string;
 }
 
-interface ResetPassword { email: string, newPassword: string, resetPasswordToken: string }
+interface ResetPassword { email: string | undefined, newPassword: string, resetPasswordToken: string | undefined }
 
 export interface AuthContextI {
   isUserLoggedIn: boolean;
@@ -36,7 +36,7 @@ export const AuthContext = React.createContext<AuthContextI>({
   signUserInWithGoogle: () => { }
 });
 
-interface LoginDetails {
+export interface LoginDetails {
   email: string;
   password: string;
 }

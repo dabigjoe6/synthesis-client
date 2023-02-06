@@ -4,9 +4,10 @@ import { Colors } from "../config";
 
 interface ButtonProps {
   label: string;
-  onClick: () => void;
   disabled?: boolean;
   loading?: boolean;
+  transparent?: boolean;
+  onClick: () => void;
 }
 
 const handleBackground = ({ disabled, transparent }: {

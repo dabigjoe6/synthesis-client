@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
+import * as React from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Input, Button } from "../../components";
 import { Container, Form, H4 } from "./components";
-import { AuthContext } from "../../contexts/Auth";
+import { AuthContext, LoginDetails } from "../../contexts/Auth";
 import { useNavigate } from "react-router-dom";
 
 const SignUpSchema = Yup.object().shape({
@@ -23,11 +23,11 @@ const SignUpSchema = Yup.object().shape({
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const { registerUser } = useContext(AuthContext);
+  const { registerUser } = React.useContext(AuthContext);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleSignUp = ({ email, password }) => {
+  const handleSignUp = ({ email, password }: LoginDetails & { confirmPassword: string }) => {
     setIsLoading(true);
     registerUser({ email, password }, () => {
       setIsLoading(false);

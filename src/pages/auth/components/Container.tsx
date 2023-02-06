@@ -1,12 +1,13 @@
+import * as React from 'react';
 import styled from "styled-components";
 import { Text as TextComponent } from "../../../components";
 import morningLogo from '../../../morning.png';
-import { COLORS } from "../../../config";
+import { Colors } from "../../../config";
 import { useNavigate } from "react-router-dom";
 const Body = styled.div`
   display: flex;
   align-items: center;
-  background-color: ${COLORS.BACKGROUND_LIGHT};
+  background-color: ${Colors.BACKGROUND_LIGHT};
   flex-direction: column;
   border-radius: 3px;
   padding-bottom: 30px;
@@ -48,7 +49,7 @@ const Text = styled(TextComponent)`
   text-align: center;
 `
 
-const Container = ({ children }) => {
+const Container = ({ children }: { children: React.ReactNode }) => {
   const navigate = useNavigate();
 
   const handleIconClick = () => {

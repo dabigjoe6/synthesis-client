@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import * as React from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Input, Button } from "../../components";
@@ -24,11 +24,11 @@ const ChangePassword = () => {
 
   const { email, resetPasswordToken } = useParams();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const { changePassword } = useContext(AuthContext);
+  const { changePassword } = React.useContext(AuthContext);
 
-  const handleChangePassword = ({ newPassword }) => {
+  const handleChangePassword = ({ newPassword }: { newPassword: string; confirmNewPassword: string }) => {
     setIsLoading(true);
     changePassword({ email, newPassword, resetPasswordToken }, (success) => {
       setIsLoading(false);

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import * as React from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Input, Button, Spacing } from "../../components";
@@ -9,18 +9,18 @@ import {
   GoogleSignIn,
   EmailSignIn,
 } from "./components";
-import { AuthContext } from "../../contexts/Auth";
+import { AuthContext, LoginDetails } from "../../contexts/Auth";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from '@react-oauth/google';
 import styled from "styled-components";
-import { COLORS } from "../../config";
+import { Colors } from "../../config";
 
-const CreateNewAccountBtn = styled(Button)`
+const CreateNewAccountBtn = styled(Button) <{ transparent: boolean }>`
   margin-top: 10px;
-  color: ${COLORS.SECONDARY};
+  color: ${Colors.SECONDARY};
 `;
 
-const ForgotPasswordBtn = styled(Button)`
+const ForgotPasswordBtn = styled(Button) <{ transparent: boolean }>`
   color: grey;
 `;
 
@@ -31,29 +31,23 @@ const LoginSchema = Yup.object().shape({
 
 const Login = () => {
   const navigate = useNavigate();
-  const { signUserIn, signUserInWithGoogle } = useContext(AuthContext);
+  const { signUserIn, signUserInWithGoogle } = React.useContext(AuthContext);
 
-  const onGoogleLoginSuccess = (response) => {
+  const onGoogleLoginSuccess = (response: { code: string }) => {
     setIsLoading(true);
     signUserInWithGoogle(response.code, () => {
       setIsLoading(false);
     });
   };
 
-  const onGoogleLoginFailure = (response) => {
-    // TODO: Handle better
-    console.error("Could not sign in with google", response);
-  };
-
   const login = useGoogleLogin({
     onSuccess: onGoogleLoginSuccess,
-    onFailure: onGoogleLoginFailure,
     flow: 'auth-code'
   });
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const [isEmailSignIn, setIsEmailSignIn] = useState(false);
+  const [isEmailSignIn, setIsEmailSignIn] = React.useState(false);
 
   const emailForm = () => (
     <Form>
@@ -64,7 +58,7 @@ const Login = () => {
         type="email"
         value={formik.values.email}
         onChange={formik.handleChange}
-        error={formik.errors.email}
+        error={formik.errors.email as string}
       />
       <Input
         label="Password"
@@ -73,7 +67,7 @@ const Login = () => {
         type="password"
         value={formik.values.password}
         onChange={formik.handleChange}
-        error={formik.errors.email}
+        error={formik.errors.password as string}
       />
     </Form>
   );
@@ -86,7 +80,7 @@ const Login = () => {
     login();
   };
 
-  const handleSignIn = (loginDetails) => {
+  const handleSignIn = (loginDetails: LoginDetails) => {
     setIsLoading(true);
     signUserIn(loginDetails, () => {
       setIsLoading(false);
@@ -104,7 +98,7 @@ const Login = () => {
   const formik = useFormik({
     initialValues: {
       email: "",
-      passwowrd: "",
+      password: "",
     },
     onSubmit: handleSignIn,
     validationSchema: LoginSchema,

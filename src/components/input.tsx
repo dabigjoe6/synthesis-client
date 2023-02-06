@@ -4,8 +4,15 @@ import Text from "./text";
 import TextInput from "./text-input";
 
 interface InputProps {
+  id?: string;
   label: string;
-  error: string;
+  error?: string;
+  lightShade?: boolean;
+  name: string;
+  type?: string;
+  placeholder?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent) => void;
 }
 
 const Container = styled.div`

@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
-enum FontSize {
+export enum FontSize {
   "xl" = "xl",
   "lg" = "lg",
-  "sm" = "sm"
+  "md" = "md",
+  "sm" = "sm",
 }
 
 const handleFontSize = (fontSize: FontSize | undefined) => {

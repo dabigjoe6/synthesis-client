@@ -3,8 +3,8 @@ import { useState, createContext, useRef } from "react";
 
 interface DisplayDialog {
   dialog: string;
-  primaryAction: Action;
-  secondaryAction: Action;
+  primaryAction: ActionType | null;
+  secondaryAction?: ActionType | null;
 }
 
 interface Action {
@@ -36,13 +36,17 @@ export const DialogProvider = ({ children }: { children: React.ReactNode }) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [dialog, setDialog] = useState("");
 
-  const dialogPrimaryAction = useRef<Action | null>(null);
-  const dialogSecondaryAction = useRef<Action | null>(null);
+  const dialogPrimaryAction = useRef<ActionType | null>(null);
+  const dialogSecondaryAction = useRef<ActionType | null>(null);
 
   const displayDialog = ({ dialog, primaryAction, secondaryAction }: DisplayDialog) => {
     setDialog(dialog);
-    dialogPrimaryAction.current = primaryAction;
-    dialogSecondaryAction.current = secondaryAction;
+    dialogPrimaryAction.current = primaryAction
+
+    if (secondaryAction) {
+      dialogSecondaryAction.current = secondaryAction;
+    }
+
     setModalVisible(true);
   };
 
