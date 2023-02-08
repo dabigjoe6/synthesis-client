@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from "react";
+import * as React from "react";
 import styled from "styled-components";
 import {
   Text,
@@ -8,6 +8,7 @@ import {
   Spacing,
   Footer,
 } from "../components";
+import { FontSize } from "../components/text";
 import { UserContext } from "../contexts/User";
 
 const Container = styled.div`
@@ -33,16 +34,16 @@ const SubscriptionsContainer = styled.div`
 const NewSubscribptionButton = styled(Button)``;
 
 const Home = () => {
-  const { subscriptions, isDataLoading } = useContext(UserContext);
+  const { subscriptions, isDataLoading } = React.useContext(UserContext);
 
   const [isSubscriptionModalVisible, setSubscriptionModalVisibility] =
-    useState(false);
+    React.useState(false);
 
-  const showSubscriptionModal = useCallback(() => {
+  const showSubscriptionModal = React.useCallback(() => {
     setSubscriptionModalVisibility(true);
   }, []);
 
-  const hideSubscriptionModal = useCallback(() => {
+  const hideSubscriptionModal = React.useCallback(() => {
     setSubscriptionModalVisibility(false);
   }, []);
 
@@ -52,7 +53,7 @@ const Home = () => {
         <Text>Loading...</Text>
       ) : subscriptions && subscriptions.length > 0 ? (
         <SubscriptionsContainer>
-          <Text fontSize="xl" bold>
+          <Text fontSize={FontSize.xl} bold>
             Subscriptions
           </Text>
           <Text>
@@ -74,7 +75,7 @@ const Home = () => {
         </SubscriptionsContainer>
       ) : (
         <>
-          <Text fontSize="lg">You don't have any subscriptions</Text>
+          <Text fontSize={FontSize.lg}>You don't have any subscriptions</Text>
           <Button
             label="Add Subscription now"
             onClick={showSubscriptionModal}

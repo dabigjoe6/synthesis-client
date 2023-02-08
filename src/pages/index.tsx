@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import * as React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "../contexts/Auth";
 import { UserProvider } from "../contexts/User";
@@ -21,15 +21,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const Router = () => {
-  useEffect(() => {
+  React.useEffect(() => {
     const dev = process.env.NODE_ENV;
-    document.title = `MorningBrew - ${
-      dev === "development" ? "DEV" : "STAGING"
-    }`;
+    document.title = `MorningBrew - ${dev === "development" ? "DEV" : "STAGING"
+      }`;
   }, []);
 
   return (
-    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ""}>
       <BrowserRouter>
         <AuthProvider>
           <UserProvider>

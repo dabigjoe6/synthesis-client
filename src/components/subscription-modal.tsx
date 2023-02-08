@@ -1,11 +1,11 @@
-import { useContext, useState, useCallback } from "react";
+import * as React from 'react';
 import styled from "styled-components";
 import * as Yup from "yup";
-import { COLORS, SERVICES } from "../config";
+import { Colors, Services } from "../config";
 import DropdownInput from "./dropdown-input";
 import Input from "./input";
 import Spacing from "./spacing";
-import Text from "./text";
+import Text, { FontSize } from "./text";
 import Button from "./button";
 import { UserContext } from "../contexts/User";
 import { useFormik } from "formik";
@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 
 const Container = styled.div`
   display: flex;
-  background: ${COLORS.BACKGROUND};
+  background: ${Colors.BACKGROUND};
   height: 50%;
   width: 90vw;
   padding: 20px;
@@ -72,27 +72,27 @@ const RSSSchema = Yup.object().shape({
   service: Yup.string(),
 });
 
-const SERVICES_VALUES = Object.values(SERVICES);
+const SERVICES_VALUES = Object.values(Services);
 
-const SubscriptionModal = ({ isVisible, onClose }) => {
-  const [isLoading, setIsLoading] = useState(false);
+const SubscriptionModal = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => void }) => {
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const { subscribeToAuthor } = useContext(UserContext);
+  const { subscribeToAuthor } = React.useContext(UserContext);
 
   const handleSchema = () => {
     switch (formik.values.service) {
-      case SERVICES.MEDIUM:
+      case Services.MEDIUM:
         return MediumSchema;
-      case SERVICES.SUBSTACK:
+      case Services.SUBSTACK:
         return SubstackSchema;
-      case SERVICES.RSS:
+      case Services.RSS:
         return RSSSchema;
       default:
         return MediumSchema;
     }
   };
 
-  const handleSubscription = useCallback(({ service, author }) => {
+  const handleSubscription = React.useCallback(({ service, author }: { service: Services; author: string }) => {
     try {
       setIsLoading(true);
       subscribeToAuthor(service, author, (success) => {
@@ -111,7 +111,7 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
     }
   }, []);
 
-  const handleClose = useCallback(() => {
+  const handleClose = React.useCallback(() => {
     formik.resetForm();
     onClose();
   }, []);
@@ -129,7 +129,7 @@ const SubscriptionModal = ({ isVisible, onClose }) => {
     <Wrapper>
       <Container>
         <CloseButton label="Cancel" onClick={handleClose} />
-        <Text fontSize="xl" bold>
+        <Text fontSize={FontSize.xl} bold>
           Add New Subscription
         </Text>
         <Spacing />

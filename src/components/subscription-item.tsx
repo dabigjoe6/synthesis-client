@@ -1,17 +1,19 @@
-import { useContext, useCallback, useState } from "react";
+import * as React from "react";
 import styled from "styled-components";
-import { UserContext } from "../contexts/User";
-import Text from "./text";
+import { SubscriptionItemI, UserContext } from "../contexts/User";
+import Text, { FontSize } from "./text";
 import Button from "./button";
-import { COLORS } from "../config";
+import { Colors } from "../config";
 import { DialogContext } from "../contexts/Dialog";
 import { toast } from "react-toastify";
+
+
 const Container = styled.div`
   display: flex;
   align-items: center;
   margin-top: 5px;
   margin-bottom: 5px;
-  background: ${COLORS.BACKGROUND_LIGHT};
+  background: ${Colors.BACKGROUND_LIGHT};
   justify-content: space-between;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -19,7 +21,9 @@ const Container = styled.div`
   padding-right: 5px;
 `;
 
-const UnsubscribeButton = styled(Button)`
+const UnsubscribeButton = styled(Button) <{
+  transparent?: boolean;
+}>`
   width: 100px;
   height: 100%;
   margin-top: 0px;
@@ -43,19 +47,19 @@ const Space = styled.div`
   min-width: 10px;
 `
 
-const SubscriptionItem = ({ data }) => {
+const SubscriptionItem = ({ data }: { data: SubscriptionItemI }) => {
   const { name, url, _id } = data;
 
-  const { unsubscribeFromAuthor } = useContext(UserContext);
-  const { displayDialog } = useContext(DialogContext);
+  const { unsubscribeFromAuthor } = React.useContext(UserContext);
+  const { displayDialog } = React.useContext(DialogContext);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleUrl = (url) => {
+  const handleUrl = (url: string) => {
     const mediumUsernameRegex = /(?:@).*/;
 
     let name =
-      url.match(mediumUsernameRegex) && url.match(mediumUsernameRegex)[0];
+      url.match(mediumUsernameRegex) && (url.match(mediumUsernameRegex) || [])[0];
 
     let split = url.split("/@");
 
@@ -76,7 +80,7 @@ const SubscriptionItem = ({ data }) => {
     return name;
   };
 
-  const handleUnsubscription = useCallback(async () => {
+  const handleUnsubscription = React.useCallback(async () => {
     const primaryAction = async () => {
       try {
         setIsLoading(true);
@@ -104,7 +108,7 @@ const SubscriptionItem = ({ data }) => {
       <Wrapper>
         <Text>{handleUrl(url)}</Text>
         <Space />
-        <Text fontSize="sm">{name}</Text>
+        <Text fontSize={FontSize.sm}>{name}</Text>
       </Wrapper>
       <Actions>
         <UnsubscribeButton

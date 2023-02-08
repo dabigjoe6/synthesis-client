@@ -1,6 +1,19 @@
+import * as React from 'react';
 import styled from "styled-components";
 import Text from "./text";
 import TextInput from "./text-input";
+
+interface InputProps {
+  id?: string;
+  label: string;
+  error?: string;
+  lightShade?: boolean;
+  name: string;
+  type?: string;
+  placeholder?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent) => void;
+}
 
 const Container = styled.div`
   display: flex;
@@ -16,7 +29,7 @@ const ErrorText = styled(Text)`
   margin-top: 5px;
 `;
 
-const Input = ({ label, error, ...props }) => {
+const Input = ({ label, error, ...props }: InputProps) => {
   return (
     <Container>
       <Text>{label}</Text>

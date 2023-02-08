@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import * as React from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
 import { Input, Button, Text, Spacing } from "../../components";
@@ -6,6 +6,7 @@ import { Container, Form, H4 } from "./components";
 import { AuthContext } from "../../contexts/Auth";
 import { toast } from "react-toastify";
 import styled from "styled-components";
+import { FontSize } from "../../components/text";
 
 const ForgotPasswordSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -16,13 +17,13 @@ const TextContainer = styled.div`
 `;
 
 const ForgotPassword = () => {
-  const { resetUsersPassword } = useContext(AuthContext);
+  const { resetUsersPassword } = React.useContext(AuthContext);
 
-  const [hasResentLinkSent, setHasResentLinkSent] = useState(false);
+  const [hasResentLinkSent, setHasResentLinkSent] = React.useState(false);
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleForgotPassword = ({ email }) => {
+  const handleForgotPassword = ({ email }: { email: string }) => {
     setIsLoading(true);
     resetUsersPassword(email, (success) => {
       setIsLoading(false);
@@ -58,7 +59,7 @@ const ForgotPassword = () => {
       ) : (
         <>
           <H4>Reset Password</H4>
-          <Text fontSize="md" align="center">
+          <Text fontSize={FontSize.md} align="center">
             To reset your password a reset link will be sent to your registered
             e-mail address
           </Text>

@@ -1,5 +1,6 @@
+import * as React from 'react';
 import styled from "styled-components";
-import { COLORS } from "../config";
+import { Colors } from "../config";
 
 const Select = styled.select`
   height: 35px;
@@ -8,10 +9,15 @@ const Select = styled.select`
   border-width: 0px;
   padding-left: 3px;
   color: white;
-  background: ${COLORS.BACKGROUND_LIGHT};
+  background: ${Colors.BACKGROUND_LIGHT};
 `;
 
-const DropdownInput = ({ value, values, onSelect, ...props }) => {
+const DropdownInput = ({ value, values, onSelect, ...props }: {
+  name: string;
+  value: string;
+  values: string[];
+  onSelect: (e: React.ChangeEvent) => void;
+}) => {
   return (
     <Select value={value} onChange={onSelect} {...props}>
       {values.map((value, index) => (

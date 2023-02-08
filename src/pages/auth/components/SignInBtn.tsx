@@ -1,13 +1,21 @@
+import * as React from 'react';
 import { Text } from "../../../components";
-import { COLORS } from "../../../config";
+import { Colors } from "../../../config";
 import styled from "styled-components";
 import H2 from "./H2";
+
+
+export interface SignInBtnProps {
+  icon: string;
+  text: string;
+  onClick: () => void;
+}
 
 const Container = styled.div`
   display: flex;
   align-items: center;
   border-width: 1px;
-  border-color: ${COLORS.SECONDARY};
+  border-color: ${Colors.SECONDARY};
   border-style: solid;
   padding-right: 10px;
   padding-left: 10px;
@@ -21,13 +29,13 @@ const Container = styled.div`
 `;
 
 const Icon = styled(H2)`
-  color: ${COLORS.PRIMARY};
+  color: ${Colors.PRIMARY};
   margin: 0px;
   margin-right: 8px;
   margin-bottom: 1px;
 `;
 
-const SignInBtn = (props) => {
+const SignInBtn = (props: SignInBtnProps) => {
   return (
     <Container onClick={props.onClick}>
       <Icon>{props.icon}</Icon>
