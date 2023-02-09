@@ -69,6 +69,12 @@ const Login = () => {
         onChange={formik.handleChange}
         error={formik.errors.password as string}
       />
+      <Button
+        onClick={formik.handleSubmit}
+        label="Continue"
+        disabled={!formik.isValid}
+        loading={isLoading}
+      />
     </Form>
   );
 
@@ -125,12 +131,6 @@ const Login = () => {
         onClick={handleForgotPassword}
         label="Forgot password?"
         transparent
-      />
-      <Button
-        onClick={formik.handleSubmit}
-        label="Continue"
-        disabled={!formik.isValid}
-        loading={isLoading}
       />
     </Container>
   );
