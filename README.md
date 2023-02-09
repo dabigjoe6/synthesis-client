@@ -1,4 +1,4 @@
-## Web Client for morning-brew => https://github.com/dabigjoe6/morning-brew
+## Web Client for Synthesis => https://github.com/dabigjoe6/synthesis
 
 ## Development
 ```
