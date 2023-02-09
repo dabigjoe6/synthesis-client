@@ -23,11 +23,10 @@ const IconWrapper = styled.div`
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-right: 40px;
-  padding-left: 40px;
+  align-items: center;ci
   box-sizing: border-box;
   pointer: cursor;
+  margin-left: 0px;
 `;
 
 const Wrapper = styled.div`
@@ -39,14 +38,16 @@ const Wrapper = styled.div`
 `;
 
 const Logo = styled.img`
-  width: 120px;
+  width: 250px;
   height: 50px;
   object-fit: cover;
-  margin-bottom: 20px;
+  align-self: center;
+  margin-bottom: 0px;
 `
 
 const Text = styled(TextComponent)`
   text-align: center;
+  margin: 0px;
 `
 
 const Container = ({ children }: { children: React.ReactNode }) => {
