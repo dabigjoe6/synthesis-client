@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from "styled-components";
 import { Text as TextComponent } from "../../../components";
-import morningLogo from '../../../morning.png';
+import synthesisLogo from '../../../SYNTHESIS.png';
 import { Colors } from "../../../config";
 import { useNavigate } from "react-router-dom";
 const Body = styled.div`
@@ -59,7 +59,7 @@ const Container = ({ children }: { children: React.ReactNode }) => {
   return (
     <Wrapper>
       <IconWrapper onClick={handleIconClick}>
-        <Logo src={morningLogo} />
+        <Logo src={synthesisLogo} />
         <Text>Email digests of the most important articles from your favourite authors</Text>
       </IconWrapper>
       <Body>{children}</Body>
