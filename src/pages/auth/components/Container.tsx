@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from "styled-components";
 import { Text as TextComponent } from "../../../components";
-import synthesisLogo from '../../../SYNTHESIS.png';
+import synthesisLogo from '../../../synthesis.png';
 import { Colors } from "../../../config";
 import { useNavigate } from "react-router-dom";
 const Body = styled.div`
