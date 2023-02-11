@@ -10,7 +10,7 @@ const Body = styled.div`
   background-color: ${Colors.BACKGROUND_LIGHT};
   flex-direction: column;
   border-radius: 3px;
-  padding-bottom: 30px;
+  padding-bottom: 50px;
   width: 90%;
   max-width: 400px;
   padding-right: 20px;

@@ -69,6 +69,16 @@ const Login = () => {
         onChange={formik.handleChange}
         error={formik.errors.password as string}
       />
+      <CreateNewAccountBtn
+        onClick={handleSignUp}
+        label="No account? Create one"
+        transparent
+      />
+      <ForgotPasswordBtn
+        onClick={handleForgotPassword}
+        label="Forgot password?"
+        transparent
+      />
       <Button
         onClick={formik.handleSubmit}
         label="Continue"
@@ -122,16 +132,7 @@ const Login = () => {
           <EmailSignIn onClick={handleEmailSignIn} />
         </>
       )}
-      <CreateNewAccountBtn
-        onClick={handleSignUp}
-        label="No account? Create one"
-        transparent
-      />
-      <ForgotPasswordBtn
-        onClick={handleForgotPassword}
-        label="Forgot password?"
-        transparent
-      />
+
     </Container>
   );
 };
