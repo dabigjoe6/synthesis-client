@@ -65,7 +65,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (!response.ok) {
         if (response.status === 404) throw new Error("Not found", data.message);
         else if (response.status === 401)
-          throw new Error("Unauthorized", data.message);
+          throw new Error(data.message);
         else throw new Error(data.message);
       }
 
