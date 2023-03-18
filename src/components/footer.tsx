@@ -15,6 +15,7 @@ const Container = styled.div`
   align-items: center;
   height: 100px;
   padding-bottom: 8px;
+  margin-top: 100px;
 `;
 
 const LinkBtn = styled(Button)`

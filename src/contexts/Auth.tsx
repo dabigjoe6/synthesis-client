@@ -3,11 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { SIGNED_IN_TOKEN, SIGNED_IN_USER_KEY } from "../config";
 import { StatusCallback } from "../types.js";
+import { SettingsI } from "./Settings.js";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export interface UserI {
   email: string;
+  _id: string;
+  settings: SettingsI
 }
 
 interface ResetPassword { email: string | undefined, newPassword: string, resetPasswordToken: string | undefined }
@@ -22,6 +25,8 @@ export interface AuthContextI {
   resetUsersPassword: (email: string, callback: StatusCallback) => void;
   changePassword: (resetPasswordDetails: ResetPassword, callback: StatusCallback) => void;
   signUserInWithGoogle: (code: string, callback: StatusCallback) => void;
+  getUserDetails: () => void;
+  updateUserSettings: (user: UserI) => void;
 }
 
 export const AuthContext = React.createContext<AuthContextI>({
@@ -33,7 +38,9 @@ export const AuthContext = React.createContext<AuthContextI>({
   signUserOut: () => { },
   resetUsersPassword: () => { },
   changePassword: () => { },
-  signUserInWithGoogle: () => { }
+  signUserInWithGoogle: () => { },
+  getUserDetails: () => { },
+  updateUserSettings: () => { }
 });
 
 export interface LoginDetails {
@@ -48,7 +55,38 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isUserLoggedIn, setIsUserLoggedIn] = React.useState(false);
 
   const [token, setToken] = React.useState(null);
-  const [user, setUser] = React.useState(null);
+  const [user, setUser] = React.useState<UserI | null>(null);
+
+  const getUserDetails = async () => {
+    try {
+      if (user && token) {
+        const response = await fetch(BASE_URL + "/user/details", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ userId: user._id }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          if (response.status === 404) throw new Error("Not found", data.message);
+          else if (response.status === 401)
+            throw new Error(data.message);
+          else throw new Error(data.message);
+        }
+
+        setUser(data.user);
+        localStorage.setItem(SIGNED_IN_USER_KEY, JSON.stringify(data.user));
+      }
+
+    } catch (err) {
+      toast.error(err.message || err);
+      console.error("Could not get user details", err);
+    }
+  };
 
   const registerUser = async ({ email, password }: LoginDetails, callback: StatusCallback) => {
     try {
@@ -205,6 +243,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
+  const updateUserSettings = (newUser: UserI) => {
+    setUser(newUser);
+  }
+
   React.useEffect(() => {
     if (token) {
       setIsUserLoggedIn(true);
@@ -222,16 +264,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   React.useEffect(() => {
-    if (isUserLoggedIn) {
-      const navigateTo = location?.state?.from || "/";
-      navigate(navigateTo, { replace: true });
+    const init = async () => {
+      if (isUserLoggedIn) {
+        await getUserDetails();
+        const navigateTo = location?.state?.from || "/";
+        navigate(navigateTo, { replace: true });
+      }
     }
+
+    init();
+
   }, [isUserLoggedIn]);
+
+
 
   return (
     <AuthContext.Provider
       value={{
         user,
+        getUserDetails,
         registerUser,
         isUserLoggedIn,
         signUserIn,
@@ -240,6 +291,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         resetUsersPassword,
         changePassword,
         signUserInWithGoogle,
+        updateUserSettings
       }}
     >
       {children}

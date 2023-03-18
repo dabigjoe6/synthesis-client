@@ -7,6 +7,7 @@ import {
   SubscriptionItem,
   Spacing,
   Footer,
+  PauseDigest
 } from "../components";
 import { FontSize } from "../components/text";
 import { UserContext } from "../contexts/User";
@@ -29,6 +30,7 @@ const SubscriptionsContainer = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 `;
 
 const NewSubscribptionButton = styled(Button)``;
@@ -53,25 +55,28 @@ const Home = () => {
         <Text>Loading...</Text>
       ) : subscriptions && subscriptions.length > 0 ? (
         <SubscriptionsContainer>
-          <Text fontSize={FontSize.xl} bold>
-            Subscriptions
-          </Text>
-          <Text>
-            You'll get an email digest of one article from your subscriptions at
-            8:00 AM UTC everyday (This will be customizable in future updates)
-          </Text>
-          <Spacing />
-          {subscriptions && subscriptions.map((item) => (
-            <SubscriptionItem
-              key={item?.subscription?.url}
-              data={item?.subscription}
+          <div>
+            <Text fontSize={FontSize.xl} bold>
+              Subscriptions
+            </Text>
+            <Text>
+              You'll get an email digest of one article from your subscriptions at
+              8:00 AM UTC everyday (This will be customizable in future updates)
+            </Text>
+            <Spacing />
+            {subscriptions && subscriptions.map((item) => (
+              <SubscriptionItem
+                key={item?.subscription?.url}
+                data={item?.subscription}
+              />
+            ))}
+            <Spacing />
+            <NewSubscribptionButton
+              label="Add new Subscription"
+              onClick={showSubscriptionModal}
             />
-          ))}
-          <Spacing />
-          <NewSubscribptionButton
-            label="Add new Subscription"
-            onClick={showSubscriptionModal}
-          />
+          </div>
+          <PauseDigest />
         </SubscriptionsContainer>
       ) : (
         <>

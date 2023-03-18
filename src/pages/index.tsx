@@ -1,7 +1,10 @@
 import * as React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
+
 import { AuthProvider } from "../contexts/Auth";
 import { UserProvider } from "../contexts/User";
+import { SettingsProvider } from "../contexts/Settings";
+
 import { Layout } from "../components";
 
 import Home from "./home";
@@ -32,24 +35,26 @@ const Router = () => {
       <BrowserRouter>
         <AuthProvider>
           <UserProvider>
-            <DialogProvider>
-              <Routes>
-                <Route element={<Layout />}>
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/sign-up" element={<SignUp />} />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                  <Route
-                    path="/change-password/:email/:resetPasswordToken"
-                    element={<ChangePassword />}
-                  />
-                  <Route element={<RequireAuth />}>
-                    <Route path="/" element={<Home />} />
+            <SettingsProvider>
+              <DialogProvider>
+                <Routes>
+                  <Route element={<Layout />}>
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/sign-up" element={<SignUp />} />
+                    <Route path="/forgot-password" element={<ForgotPassword />} />
+                    <Route
+                      path="/change-password/:email/:resetPasswordToken"
+                      element={<ChangePassword />}
+                    />
+                    <Route element={<RequireAuth />}>
+                      <Route path="/" element={<Home />} />
+                    </Route>
+                    <Route path="*" element={<ErrorPage />} />
                   </Route>
-                  <Route path="*" element={<ErrorPage />} />
-                </Route>
-              </Routes>
-              <ToastContainer hideProgressBar={true} theme="dark" />
-            </DialogProvider>
+                </Routes>
+                <ToastContainer hideProgressBar={true} theme="dark" />
+              </DialogProvider>
+            </SettingsProvider>
           </UserProvider>
         </AuthProvider>
       </BrowserRouter>
