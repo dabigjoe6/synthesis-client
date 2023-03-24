@@ -7,3 +7,4 @@ export { default as Spacing } from "./spacing";
 export { default as SubscriptionItem } from "./subscription-item";
 export { default as Footer } from './footer';
 export { default as PauseDigest } from './pause-digest';
+export { default as Frequency } from './frequency';

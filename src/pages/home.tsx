@@ -7,9 +7,11 @@ import {
   SubscriptionItem,
   Spacing,
   Footer,
-  PauseDigest
+  PauseDigest,
+  Frequency
 } from "../components";
 import { FontSize } from "../components/text";
+import { FrequencyProvider } from "../contexts/Frequency";
 import { UserContext } from "../contexts/User";
 
 const Container = styled.div`
@@ -56,13 +58,12 @@ const Home = () => {
       ) : subscriptions && subscriptions.length > 0 ? (
         <SubscriptionsContainer>
           <div>
-            <Text fontSize={FontSize.xl} bold>
-              Subscriptions
+            <Text fontSize={FontSize.lg} align="center" bold>
+              Your subscriptions
             </Text>
-            <Text>
-              You'll get an email digest of one article from your subscriptions at
-              8:00 AM UTC everyday (This will be customizable in future updates)
-            </Text>
+            <FrequencyProvider>
+              <Frequency />
+            </FrequencyProvider>
             <Spacing />
             {subscriptions && subscriptions.map((item) => (
               <SubscriptionItem
