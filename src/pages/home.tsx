@@ -8,7 +8,8 @@ import {
   Spacing,
   Footer,
   PauseDigest,
-  Frequency
+  Frequency,
+  SummarySettings
 } from "../components";
 import { FontSize } from "../components/text";
 import { FrequencyProvider } from "../contexts/Frequency";
@@ -78,6 +79,7 @@ const Home = () => {
               onClick={showSubscriptionModal}
             />
           </div>
+          <SummarySettings />
           <PauseDigest />
         </SubscriptionsContainer>
       ) : (
