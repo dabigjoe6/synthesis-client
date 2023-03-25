@@ -19,7 +19,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
+  box-sizing: border-box;
 `;
 
 const SubscriptionsContainer = styled.div`
@@ -27,8 +28,8 @@ const SubscriptionsContainer = styled.div`
   padding-top: 50px;
   width: 100vw;
   max-width: 500px;
-  padding-right: 10px;
-  padding-left: 10px;
+  padding-right: 15px;
+  padding-left: 15px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

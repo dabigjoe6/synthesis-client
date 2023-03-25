@@ -33,6 +33,7 @@ const Container = styled.div`
   box-shadow: rgba(102, 206, 214, 0.2) 0px 12px 28px 0px,
     rgba(102, 206, 214, 0.1) 0px 2px 4px 0px,
     rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
+  max-width: 80%;
 `;
 
 
@@ -40,7 +41,7 @@ const DaysModal = ({ isVisible, closeDaysModal }: DaysModalProps) => {
   return isVisible ? (
     <ModalContainer>
       <Container>
-        <Text>Which days of the week you want to receive your digest?</Text>
+        <Text align='center'>Which days of the week you want to receive your digest?</Text>
         <DaysItems />
         <Button label="Done" onClick={closeDaysModal} />
       </Container>

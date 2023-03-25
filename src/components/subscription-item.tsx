@@ -98,7 +98,7 @@ const SubscriptionItem = ({ data }: { data: SubscriptionItemI }) => {
       }
     };
     displayDialog({
-      dialog: `Are you sure you want to unsubscribe from ${handleUrl(url)}`,
+      dialog: `Are you sure you want to unsubscribe from ${handleUrl(url)}?`,
       primaryAction,
     });
   }, []);
