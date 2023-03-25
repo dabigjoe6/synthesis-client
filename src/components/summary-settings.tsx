@@ -4,6 +4,9 @@ import Switch from 'react-switch';
 
 import ComponentText from './text';
 import { Colors } from '../config';
+import * as _ from 'lodash';
+import { SettingsContext } from '../contexts/Settings';
+import { AuthContext } from '../contexts/Auth';
 
 const Container = styled.div`
   display: flex;
@@ -25,17 +28,40 @@ const Text = styled(ComponentText)`
 `;
 
 const SummarySettings = () => {
-  const [isSummaryOn, setIsSummaryOn] = React.useState(true);
+  const { user } = React.useContext(AuthContext);
+  const { enableSummary, disableSummary } = React.useContext(SettingsContext);
+
+
+  const [isSummaryOn, setIsSummaryOn] = React.useState<boolean>(user?.settings.isSummaryEnabled || true);
+  const [isLoading, setIsLoading] = React.useState(false);
+
 
   const handleChange = () => {
-    setIsSummaryOn(isSummaryOn => !isSummaryOn);
+    setIsSummaryOn(prevSummaryOn => !prevSummaryOn);
   };
 
+
+  const currentSummaryValue = React.useRef<boolean>();
+  currentSummaryValue.current = isSummaryOn;
+
+  React.useEffect(() => {
+    const debounceFunc = _.debounce(() => {
+      setIsLoading(true);
+      if (currentSummaryValue.current) {
+        enableSummary(() => { setIsLoading(false) });
+      } else {
+        disableSummary(() => { setIsLoading(false) });
+      }
+    }, 200);
+
+    debounceFunc();
+  }, [isSummaryOn])
 
   return (
     <Container>
       <Text>{`Summaries of digest (${isSummaryOn ? 'On' : 'Off'})`}</Text>
       <Switch
+        disabled={isLoading}
         onChange={handleChange}
         checked={isSummaryOn}
         onColor={Colors.PRIMARY}
