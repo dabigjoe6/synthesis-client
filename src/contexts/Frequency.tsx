@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { dayMap } from '../config';
+import { AuthContext } from './Auth';
 
 interface FrequencyContextI {
   isNewChange: boolean;
@@ -10,8 +12,8 @@ interface FrequencyContextI {
   addTime: () => void;
   removeTime: () => void;
   updateTime: (time: string, index: number) => void;
-  saveNewFrequency: () => void;
   resetChange: () => void;
+  setIsNewChange: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 
@@ -19,14 +21,14 @@ export const FrequencyContext = React.createContext<FrequencyContextI>({
   isNewChange: false,
   times: [],
   frequencyType: 'daily',
-  selectedDays: { 'Mon': 'Mon' },
+  selectedDays: { 'Mo': 'mon' },
   setFrequencyType: () => { },
   handleDays: () => { },
   addTime: () => { },
   removeTime: () => { },
   updateTime: () => { },
-  saveNewFrequency: () => { },
-  resetChange: () => { }
+  resetChange: () => { },
+  setIsNewChange: () => { }
 });
 
 const buildSelectedDays = (days: Array<string>) => {
@@ -59,10 +61,11 @@ const buildSelectedDays = (days: Array<string>) => {
 }
 
 export const FrequencyProvider = ({ children }: { children: React.ReactNode }) => {
+  const { user } = React.useContext(AuthContext);
 
-  const userFrequencyType = 'weekly';
-  const userTimes = ['08:00', "07:00"];
-  const userSelectedDays = buildSelectedDays(['mon', 'wed']);
+  const userFrequencyType = user?.settings.frequency.frequencyType || "daily";
+  const userTimes = user?.settings.frequency.time || ["08:00"];
+  const userSelectedDays = buildSelectedDays((user?.settings.frequency.days || ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]) as Array<string>);
 
   const [frequencyType, setFrequencyType] = React.useState<string>(userFrequencyType);
   const [times, setTimes] = React.useState<Array<string>>(userTimes);
@@ -77,7 +80,7 @@ export const FrequencyProvider = ({ children }: { children: React.ReactNode }) =
       setSelectedDays({ ...oldSelectedDays });
     } else {
       const oldSelectedDays = selectedDays;
-      oldSelectedDays[day] = day;
+      oldSelectedDays[day] = dayMap[day];
       setSelectedDays({ ...oldSelectedDays });
     }
   }
@@ -89,18 +92,14 @@ export const FrequencyProvider = ({ children }: { children: React.ReactNode }) =
   const removeTime = (): void => {
     const newTimes = [...times];
     newTimes.pop();
-    setTimes(newTimes);
+    setTimes([...newTimes]);
   }
 
   const updateTime = (time: string, index: number): void => {
     const newTimes = [...times];
     newTimes[index] = time;
-    setTimes(newTimes);
+    setTimes([...newTimes]);
   }
-
-  const saveNewFrequency = () => {
-    console.log("Saving new frequency")
-  };
 
   const resetChange = () => {
     setFrequencyType(userFrequencyType);
@@ -122,6 +121,10 @@ export const FrequencyProvider = ({ children }: { children: React.ReactNode }) =
           }
         });
       }
+      if (Object.keys(selectedDays).length !== Object.keys(userSelectedDays).length) {
+        setIsNewChange(true);
+      };
+
       Object.keys(selectedDays).forEach(day => {
         if (!(day in userSelectedDays)) {
           setIsNewChange(true)
@@ -143,8 +146,8 @@ export const FrequencyProvider = ({ children }: { children: React.ReactNode }) =
       addTime,
       removeTime,
       updateTime,
-      saveNewFrequency,
-      resetChange
+      resetChange,
+      setIsNewChange
     }}>
       {children}
     </FrequencyContext.Provider>

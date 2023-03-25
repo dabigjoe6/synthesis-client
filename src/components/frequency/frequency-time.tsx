@@ -25,7 +25,7 @@ const FrequencyTime = ({ time, index }: FrequencyTimeProps) => {
   const generateOptions = () => {
     return (
       Object.keys(times).map((time: string) => {
-        return <option value={times[time]}>{time}</option>
+        return <option key={time} value={times[time]}>{time}</option>
       })
     )
   };

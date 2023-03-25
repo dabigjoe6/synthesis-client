@@ -39,4 +39,14 @@ export const times: { [key: string]: string } = {
   '9:00 pm': '21:00',
   '10:00 pm': '22:00',
   '11:00 pm': '23:00',
+};
+
+export const dayMap: { [key: string]: string } = {
+  'Mo': 'mon',
+  'Tu': 'tue',
+  'We': 'wed',
+  'Th': 'thu',
+  'Fr': 'fri',
+  'Sa': 'sat',
+  'Su': 'sun'
 }

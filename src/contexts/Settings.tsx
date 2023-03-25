@@ -37,11 +37,13 @@ export interface SettingsI {
 export interface SettingsContextI {
   pauseDigest: (cb: StatusCallback) => void;
   resumeDigest: (cb: StatusCallback) => void;
+  saveNewFrequency: (_frequencyType: string, _times: Array<string>, _selectedDays: { [key: string]: string }, cb: StatusCallback) => void;
 }
 
 export const SettingsContext = React.createContext<SettingsContextI>({
   pauseDigest: () => { },
-  resumeDigest: () => { }
+  resumeDigest: () => { },
+  saveNewFrequency: () => { },
 });
 
 export const SettingsProvider = ({ children }: { children: React.ReactNode }) => {
@@ -81,7 +83,6 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
       }
     } catch (err) {
       toast.error(err.message || err);
-      signUserOut();
       cb(false);
       console.error("Could not unsubscribe: ", err);
     }
@@ -121,11 +122,56 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
       }
     } catch (err) {
       toast.error(err.message || err);
-      signUserOut();
       cb(false);
       console.error("Could not unsubscribe: ", err);
     }
   }
 
-  return <SettingsContext.Provider value={{ pauseDigest, resumeDigest }}>{children}</SettingsContext.Provider>
+  const saveNewFrequency = async (_frequencyType: string, _times: Array<string>, _selectedDays: { [key: string]: string }, cb: StatusCallback) => {
+    try {
+      if (user && user._id) {
+        const response = await fetch(BASE_URL + "/user/set-frequency", {
+          method: "POST",
+          body: JSON.stringify({ frequencyType: _frequencyType, time: _times, days: Object.values(_selectedDays) }),
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          if (response.status === 404) throw new Error("Not found", data.message);
+          else if (response.status === 401) {
+            signUserOut();
+            throw new Error("Session expired, please sign in", data.message);
+          } else throw new Error(data.message);
+        }
+        updateUserSettings({
+          ...user,
+          settings: {
+            ...user.settings,
+            frequency: {
+              frequencyType: _frequencyType,
+              time: _times,
+              days: (Object.values(_selectedDays) as unknown) as WeekDays[]
+            }
+          }
+        })
+        toast.success("New frequency saved");
+        cb(true)
+      } else {
+        cb(false)
+        throw new Error("User Id required");
+      }
+    } catch (err) {
+      toast.error(err.message || err);
+      cb(false)
+      toast.error("Could not update frequency");
+      console.error("Could not unsubscribe: ", err);
+    }
+  }
+
+  return <SettingsContext.Provider value={{ saveNewFrequency, pauseDigest, resumeDigest }}>{children}</SettingsContext.Provider>
 }

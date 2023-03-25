@@ -17,6 +17,7 @@ const Container = styled.div`
   align-items: center;
   padding-right: 10px;
   padding-left: 10px;
+  height: 75px;
 `
 
 const InnerContainer = styled.div`
@@ -52,7 +53,7 @@ const FrequencyTimeWrapper = styled.div`
 const renderFrequencyTimes = (times: Array<string>) => {
   return times.map((time, index) => {
     return (
-      <FrequencyTimeWrapper>
+      <FrequencyTimeWrapper key={time + "_" + index}>
         <FrequencyTime key={index} time={time} index={index} />
         {index === times.length - 1 ? null : ", "}
       </FrequencyTimeWrapper>
