@@ -22,6 +22,7 @@
     "react-spring-bottom-sheet": "3.5.0-alpha.0",
     "react-switch": "^7.0.0",
     "react-toastify": "^9.1.1",
+    "react-transition-group": "^4.4.5",
     "styled-components": "^5.3.6",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
@@ -51,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-transition-group": "^4.4.5",
     "@types/styled-components": "^5.1.26",
     "source-map-loader": "^4.0.1",
     "ts-loader": "^9.4.2",

@@ -7,8 +7,6 @@ import { AuthContext } from '../contexts/Auth';
 import { SettingsContext } from '../contexts/Settings';
 
 const Container = styled.div`
-  position: relative;
-  bottom: 150px;
   display: flex;
   justify-content: center;
   align-items: center;

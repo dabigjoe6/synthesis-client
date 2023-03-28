@@ -20,8 +20,26 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
   box-sizing: border-box;
+  overflow: scroll;
+`;
+
+const ConfigContainer = styled.div`
+  padding-top: 30px;
+  padding-bottom: 30px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 50px;
+  right: 20px;
+  left: 20px;
+  margin-right: auto;
+  margin-left: auto;
+  align-self: center;
 `;
 
 const SubscriptionsContainer = styled.div`
@@ -35,9 +53,16 @@ const SubscriptionsContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+scr`;
+
+const SubscriptionList = styled.div`
+  max-height: 400px;
+  overflow: scroll;
 `;
 
-const NewSubscribptionButton = styled(Button)``;
+const NewSubscribptionButton = styled(Button)`
+  margin-top: 0px;
+`;
 
 const Home = () => {
   const { subscriptions, isDataLoading } = React.useContext(UserContext);
@@ -67,20 +92,24 @@ const Home = () => {
               <Frequency />
             </FrequencyProvider>
             <Spacing />
-            {subscriptions && subscriptions.map((item) => (
-              <SubscriptionItem
-                key={item?.subscription?.url}
-                data={item?.subscription}
-              />
-            ))}
+            <SubscriptionList>
+              {subscriptions && subscriptions.map((item) => (
+                <SubscriptionItem
+                  key={item?.subscription?.url}
+                  data={item?.subscription}
+                />
+              ))}
+            </SubscriptionList>
             <Spacing />
             <NewSubscribptionButton
               label="Add new Subscription"
               onClick={showSubscriptionModal}
             />
+            <ConfigContainer>
+              <SummarySettings />
+              <PauseDigest />
+            </ConfigContainer>
           </div>
-          <SummarySettings />
-          <PauseDigest />
         </SubscriptionsContainer>
       ) : (
         <>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from "styled-components";
 import * as Yup from "yup";
-import { Colors, Services } from "../config";
+import { Colors, Services, ServicesIcons } from "../config";
 import Input from "./input";
 import Text, { FontSize } from "./text";
 import Service from './service';
@@ -224,9 +224,9 @@ const SubscriptionModal = ({ isVisible, onClose }: { isVisible: boolean; onClose
           ) :
           (
             <ServiceContainer>
-              <Service onClick={handleServiceClick} source="Medium" icon="https://cdn-icons-png.flaticon.com/512/2111/2111502.png" />
-              <Service onClick={handleServiceClick} source="Substack" icon="https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fba81cfff-7bc5-4aef-866e-864d0942c42d_1000x1000.png" />
-              <Service onClick={handleServiceClick} source="RSS Feed" icon="https://cdn-icons-png.flaticon.com/512/124/124033.png" />
+              <Service onClick={handleServiceClick} source="Medium" icon={ServicesIcons.MEDIUM} />
+              <Service onClick={handleServiceClick} source="Substack" icon={ServicesIcons.SUBSTACK} />
+              <Service onClick={handleServiceClick} source="RSS Feed" icon={ServicesIcons.RSS} />
             </ServiceContainer>
           )}
         {!isServiceSelected ? (

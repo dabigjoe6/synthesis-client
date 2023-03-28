@@ -1,8 +1,11 @@
 import * as React from "react";
 import styled from "styled-components";
-import { DialogContext } from "../contexts/Dialog";
-import Button from "./button";
-import { Colors } from "../config";
+import { CSSTransition } from 'react-transition-group';
+import { DialogContext } from "../../contexts/Dialog";
+import Button from "../button";
+import { Colors } from "../../config";
+
+import './dialog.css';
 
 const Container = styled.div`
   display: flex;
@@ -99,7 +102,12 @@ const Dialog = () => {
     return <ActionButton onClick={handleAction} label={secondaryActionText} />;
   }, []);
 
-  return !isModalVisible ? null : (
+  return <CSSTransition
+    in={isModalVisible}
+    timeout={300}
+    unmountOnExit
+    classNames="modal"
+  >
     <Container>
       <ModalContainer>
         <DialogText>{dialog}</DialogText>
@@ -109,7 +117,7 @@ const Dialog = () => {
         </Actions>
       </ModalContainer>
     </Container>
-  );
+  </CSSTransition>
 };
 
 export default Dialog;

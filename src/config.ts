@@ -11,6 +11,12 @@ export enum Services {
   RSS = "RSS"
 };
 
+export enum ServicesIcons {
+  MEDIUM = "https://cdn-icons-png.flaticon.com/512/2111/2111502.png",
+  SUBSTACK = "https://substackcdn.com/image/fetch/f_auto,q_auto:good,fl_progressive:steep/https%3A%2F%2Fbucketeer-e05bbc84-baa3-437e-9518-adb32be77984.s3.amazonaws.com%2Fpublic%2Fimages%2Fba81cfff-7bc5-4aef-866e-864d0942c42d_1000x1000.png",
+  RSS = "https://cdn-icons-png.flaticon.com/512/124/124033.png"
+};
+
 export const SIGNED_IN_USER_KEY = "morningbrew_user";
 export const SIGNED_IN_TOKEN = "morningbrew_token";
 
@@ -49,4 +55,4 @@ export const dayMap: { [key: string]: string } = {
   'Fr': 'fri',
   'Sa': 'sat',
   'Su': 'sun'
-}
+};

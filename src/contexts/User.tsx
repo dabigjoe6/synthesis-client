@@ -10,6 +10,7 @@ export interface SubscriptionItemI {
   name: string;
   url: string;
   _id: string;
+  source: string;
 }
 
 export interface UserContextI {

@@ -18,8 +18,6 @@ const Container = styled.div`
   padding: 5px;
   padding-right: 15px;
   border-radius: 4px;
-  position: relative;
-  top: 45px;
 `;
 
 const Text = styled(ComponentText)`
