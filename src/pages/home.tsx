@@ -3,7 +3,7 @@ import styled from "styled-components";
 import {
   Text,
   Button,
-  SubscriptionModal,
+  SubscriptionSheet,
   SubscriptionItem,
   Spacing,
   Footer,
@@ -91,7 +91,7 @@ const Home = () => {
           />
         </>
       )}
-      <SubscriptionModal
+      <SubscriptionSheet
         isVisible={isSubscriptionModalVisible}
         onClose={hideSubscriptionModal}
       />
