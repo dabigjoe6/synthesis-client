@@ -18,6 +18,7 @@ const WeekDaysDropdown = styled.div`
   background: transparent;
   margin-left: 5px;
   margin-right: 5px;
+  background: red;
 `;
 
 const FrequencyWeek = () => {
