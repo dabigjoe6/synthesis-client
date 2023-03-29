@@ -10,6 +10,7 @@ export interface SubscriptionItemI {
   name: string;
   url: string;
   _id: string;
+  source: string;
 }
 
 export interface UserContextI {
@@ -38,7 +39,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [subscriptions, setSubscriptions] = React.useState([]);
 
   const _getUserSubscriptions = async () => {
-    setDataIsLoading(true);
     try {
       const response = await fetch(BASE_URL + "/subscribe/getSubscriptions", {
         method: "POST",
@@ -92,7 +92,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       cb(true);
     } catch (err) {
       toast.error(err.message || err);
-      signUserOut();
       cb(false);
       console.error("Could not unsubscribe: ", err);
     }
@@ -128,7 +127,6 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       cb(true);
     } catch (err) {
       toast.error(err.message || err);
-      signUserOut();
       cb(false);
       console.error("Could not subscribe to service: ", err);
     }

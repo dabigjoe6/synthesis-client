@@ -3,12 +3,16 @@ import styled from "styled-components";
 import {
   Text,
   Button,
-  SubscriptionModal,
+  SubscriptionSheet,
   SubscriptionItem,
   Spacing,
   Footer,
+  PauseDigest,
+  Frequency,
+  SummarySettings
 } from "../components";
 import { FontSize } from "../components/text";
+import { FrequencyProvider } from "../contexts/Frequency";
 import { UserContext } from "../contexts/User";
 
 const Container = styled.div`
@@ -17,6 +21,25 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   height: 100vh;
+  box-sizing: border-box;
+  overflow: scroll;
+`;
+
+const ConfigContainer = styled.div`
+  padding-top: 30px;
+  padding-bottom: 30px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 50px;
+  right: 20px;
+  left: 20px;
+  margin-right: auto;
+  margin-left: auto;
+  align-self: center;
 `;
 
 const SubscriptionsContainer = styled.div`
@@ -24,14 +47,22 @@ const SubscriptionsContainer = styled.div`
   padding-top: 50px;
   width: 100vw;
   max-width: 500px;
-  padding-right: 10px;
-  padding-left: 10px;
+  padding-right: 15px;
+  padding-left: 15px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+scr`;
+
+const SubscriptionList = styled.div`
+  max-height: 400px;
+  overflow: scroll;
 `;
 
-const NewSubscribptionButton = styled(Button)``;
+const NewSubscribptionButton = styled(Button)`
+  margin-top: 0px;
+`;
 
 const Home = () => {
   const { subscriptions, isDataLoading } = React.useContext(UserContext);
@@ -53,25 +84,32 @@ const Home = () => {
         <Text>Loading...</Text>
       ) : subscriptions && subscriptions.length > 0 ? (
         <SubscriptionsContainer>
-          <Text fontSize={FontSize.xl} bold>
-            Subscriptions
-          </Text>
-          <Text>
-            You'll get an email digest of one article from your subscriptions at
-            8:00 AM UTC everyday (This will be customizable in future updates)
-          </Text>
-          <Spacing />
-          {subscriptions && subscriptions.map((item) => (
-            <SubscriptionItem
-              key={item?.subscription?.url}
-              data={item?.subscription}
+          <div>
+            <Text fontSize={FontSize.lg} align="center" bold>
+              Your subscriptions
+            </Text>
+            <FrequencyProvider>
+              <Frequency />
+            </FrequencyProvider>
+            <Spacing />
+            <SubscriptionList>
+              {subscriptions && subscriptions.map((item) => (
+                <SubscriptionItem
+                  key={item?.subscription?.url}
+                  data={item?.subscription}
+                />
+              ))}
+            </SubscriptionList>
+            <Spacing />
+            <NewSubscribptionButton
+              label="Add new Subscription"
+              onClick={showSubscriptionModal}
             />
-          ))}
-          <Spacing />
-          <NewSubscribptionButton
-            label="Add new Subscription"
-            onClick={showSubscriptionModal}
-          />
+            <ConfigContainer>
+              <SummarySettings />
+              <PauseDigest />
+            </ConfigContainer>
+          </div>
         </SubscriptionsContainer>
       ) : (
         <>
@@ -82,7 +120,7 @@ const Home = () => {
           />
         </>
       )}
-      <SubscriptionModal
+      <SubscriptionSheet
         isVisible={isSubscriptionModalVisible}
         onClose={hideSubscriptionModal}
       />

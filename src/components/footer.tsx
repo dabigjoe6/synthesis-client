@@ -13,8 +13,9 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 100px;
-  padding-bottom: 8px;
+  height: 80px;
+  margin-top: 100px;
+  margin-bottom: 15px;
 `;
 
 const LinkBtn = styled(Button)`

@@ -3,14 +3,13 @@ import styled from "styled-components";
 import { SubscriptionItemI, UserContext } from "../contexts/User";
 import Text, { FontSize } from "./text";
 import Button from "./button";
-import { Colors } from "../config";
+import { Colors, ServicesIcons } from "../config";
 import { DialogContext } from "../contexts/Dialog";
 import { toast } from "react-toastify";
 
 
 const Container = styled.div`
   display: flex;
-  align-items: center;
   margin-top: 5px;
   margin-bottom: 5px;
   background: ${Colors.BACKGROUND_LIGHT};
@@ -21,34 +20,42 @@ const Container = styled.div`
   padding-right: 5px;
 `;
 
+const InnerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const ImageAndName = styled.div`
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+`;
+
 const UnsubscribeButton = styled(Button) <{
   transparent?: boolean;
 }>`
-  width: 100px;
-  height: 100%;
   margin-top: 0px;
   color: red;
   padding: 0px;
+  height: 10px;
+  font-size: 0.7rem;
 `;
 
 const Actions = styled.div`
   display: flex;
-  align-items: center;
   justify-content: flex-end;
+  align-items: flex-start;
 `;
 
-const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
-  flex: 2;
+const Image = styled.img`
+  height: 25px;
+  width: 25px;
+  object-fit: cover;
+  margin-right: 10px;
 `;
-
-const Space = styled.div`
-  min-width: 10px;
-`
 
 const SubscriptionItem = ({ data }: { data: SubscriptionItemI }) => {
-  const { name, url, _id } = data;
+  const { name, url, _id, source } = data;
 
   const { unsubscribeFromAuthor } = React.useContext(UserContext);
   const { displayDialog } = React.useContext(DialogContext);
@@ -80,6 +87,17 @@ const SubscriptionItem = ({ data }: { data: SubscriptionItemI }) => {
     return name;
   };
 
+  const handleSource = (_source: string) => {
+    switch (_source) {
+      case "MEDIUM":
+        return ServicesIcons.MEDIUM;
+      case "SUBSTACK":
+        return ServicesIcons.SUBSTACK;
+      case "RSS":
+        return ServicesIcons.RSS;
+    };
+  };
+
   const handleUnsubscription = React.useCallback(async () => {
     const primaryAction = async () => {
       try {
@@ -98,18 +116,21 @@ const SubscriptionItem = ({ data }: { data: SubscriptionItemI }) => {
       }
     };
     displayDialog({
-      dialog: `Are you sure you want to unsubscribe from ${handleUrl(url)}`,
+      dialog: `Are you sure you want to unsubscribe from ${handleUrl(url)}?`,
       primaryAction,
     });
   }, []);
 
+
   return (
     <Container>
-      <Wrapper>
-        <Text>{handleUrl(url)}</Text>
-        <Space />
+      <InnerContainer>
+        <ImageAndName>
+          <Image src={handleSource(source)} alt={`${source} icon`} />
+          <Text>{handleUrl(url)}</Text>
+        </ImageAndName>
         <Text fontSize={FontSize.sm}>{name}</Text>
-      </Wrapper>
+      </InnerContainer>
       <Actions>
         <UnsubscribeButton
           transparent
