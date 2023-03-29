@@ -4,18 +4,30 @@ import { Colors } from "../config";
 import { AuthContext } from "../contexts/Auth";
 import Text from "./text";
 import Button from "./button";
+import SummarySettings from "./summary-settings";
+import PauseDigest from "./pause-digest";
+
 
 const Container = styled.div`
-  position: absolute;
-  bottom: 0px;
   color: ${Colors.PRIMARY};
   font-size: 0.7rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 80px;
-  margin-top: 100px;
+  margin-top: 15px;
   margin-bottom: 15px;
+  position: relative;
+  bottom: 5rem;
+`;
+
+const ConfigContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: auto;
+  margin-left: auto;
+  align-self: center;
 `;
 
 const LinkBtn = styled(Button)`
@@ -44,6 +56,10 @@ const Footer = () => {
 
   return (
     <Container>
+      <ConfigContainer>
+        <SummarySettings />
+        <PauseDigest />
+      </ConfigContainer>
       <FooterText>
         Signed in as {user?.email}
         <LinkBtn label="Switch user" onClick={signUserOut} />

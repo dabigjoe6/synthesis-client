@@ -7,9 +7,7 @@ import {
   SubscriptionItem,
   Spacing,
   Footer,
-  PauseDigest,
   Frequency,
-  SummarySettings
 } from "../components";
 import { FontSize } from "../components/text";
 import { FrequencyProvider } from "../contexts/Frequency";
@@ -18,28 +16,11 @@ import { UserContext } from "../contexts/User";
 const Container = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   box-sizing: border-box;
   overflow: scroll;
-`;
-
-const ConfigContainer = styled.div`
-  padding-top: 30px;
-  padding-bottom: 30px;
-  margin-bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  bottom: 50px;
-  right: 20px;
-  left: 20px;
-  margin-right: auto;
-  margin-left: auto;
-  align-self: center;
 `;
 
 const SubscriptionsContainer = styled.div`
@@ -56,8 +37,8 @@ const SubscriptionsContainer = styled.div`
 scr`;
 
 const SubscriptionList = styled.div`
-  max-height: 400px;
-  overflow: scroll;
+max-height: 25rem;
+overflow: scroll;
 `;
 
 const NewSubscribptionButton = styled(Button)`
@@ -79,53 +60,52 @@ const Home = () => {
   }, []);
 
   return (
-    <Container>
-      {isDataLoading ? (
-        <Text>Loading...</Text>
-      ) : subscriptions && subscriptions.length > 0 ? (
-        <SubscriptionsContainer>
-          <div>
-            <Text fontSize={FontSize.lg} align="center" bold>
-              Your subscriptions
-            </Text>
-            <FrequencyProvider>
-              <Frequency />
-            </FrequencyProvider>
-            <Spacing />
-            <SubscriptionList>
-              {subscriptions && subscriptions.map((item) => (
-                <SubscriptionItem
-                  key={item?.subscription?.url}
-                  data={item?.subscription}
-                />
-              ))}
-            </SubscriptionList>
-            <Spacing />
-            <NewSubscribptionButton
-              label="Add new Subscription"
+    <>
+      <Container>
+        {isDataLoading ? (
+          <Text>Loading...</Text>
+        ) : subscriptions && subscriptions.length > 0 ? (
+          <SubscriptionsContainer>
+            <div>
+              <Text fontSize={FontSize.lg} align="center" bold>
+                Your subscriptions
+              </Text>
+              <FrequencyProvider>
+                <Frequency />
+              </FrequencyProvider>
+              <Spacing />
+              <SubscriptionList>
+                {subscriptions && subscriptions.map((item) => (
+                  <SubscriptionItem
+                    key={item?.subscription?.url}
+                    data={item?.subscription}
+                  />
+                ))}
+              </SubscriptionList>
+              <Spacing />
+              <NewSubscribptionButton
+                label="Add new Subscription"
+                onClick={showSubscriptionModal}
+              />
+
+            </div>
+          </SubscriptionsContainer>
+        ) : (
+          <>
+            <Text fontSize={FontSize.lg}>You don't have any subscriptions</Text>
+            <Button
+              label="Add Subscription now"
               onClick={showSubscriptionModal}
             />
-            <ConfigContainer>
-              <SummarySettings />
-              <PauseDigest />
-            </ConfigContainer>
-          </div>
-        </SubscriptionsContainer>
-      ) : (
-        <>
-          <Text fontSize={FontSize.lg}>You don't have any subscriptions</Text>
-          <Button
-            label="Add Subscription now"
-            onClick={showSubscriptionModal}
-          />
-        </>
-      )}
+          </>
+        )}
+        <Footer />
+      </Container>
       <SubscriptionSheet
         isVisible={isSubscriptionModalVisible}
         onClose={hideSubscriptionModal}
       />
-      <Footer />
-    </Container>
+    </>
   );
 };
 

@@ -37,7 +37,7 @@ const UnsubscribeButton = styled(Button) <{
   margin-top: 0px;
   color: red;
   padding: 0px;
-  height: 10px;
+  height: 1rem;
   font-size: 0.7rem;
 `;
 
