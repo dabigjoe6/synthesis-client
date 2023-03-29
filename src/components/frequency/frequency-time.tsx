@@ -17,6 +17,7 @@ const Container = styled.div<{
   time: string;
 }>`
   width: ${({ time }) => isLongTime(time) ? "55px" : "48px"};
+  cursor: pointer;
 `;
 
 const FrequencyTime = ({ time, index }: FrequencyTimeProps) => {

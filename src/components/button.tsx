@@ -32,6 +32,7 @@ const Container = styled.button<{
   color: ${({ transparent }) =>
     transparent ? "white" : Colors.BACKGROUND_LIGHT};
   border-width: 0;
+  cursor: pointer;
 `;
 
 const Button = ({ label, onClick, disabled, loading, ...props }: ButtonProps) => {

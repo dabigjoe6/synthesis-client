@@ -45,6 +45,7 @@ const BackBtn = styled.div`
   align-items: center;
   font-size: 0.9rem;
   margin-bottom: 40px;
+  cursor: pointer;
 `;
 
 const CloseBtn = styled.div`
@@ -53,6 +54,7 @@ const CloseBtn = styled.div`
   align-items: center;
   font-size: 0.9rem;
   margin-bottom: 40px;
+  cursor: pointer;
 `;
 
 const BackText = styled(Text)`

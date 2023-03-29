@@ -64,12 +64,12 @@ const renderFrequencyTimes = (times: Array<string>) => {
 const AddTime = ({ onClick }: { onClick: () => void; }) => {
 
   const handleClick = () => { onClick() }
-  return <AiOutlinePlus onClick={handleClick} />
+  return <AiOutlinePlus style={{ cursor: 'pointer' }} onClick={handleClick} />
 }
 
 const RemoveTime = ({ onClick }: { onClick: () => void; }) => {
   const handleClick = () => { onClick() }
-  return <AiOutlineMinus onClick={handleClick} />
+  return <AiOutlineMinus style={{ cursor: 'pointer' }} onClick={handleClick} />
 }
 
 

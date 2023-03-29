@@ -22,6 +22,7 @@ const Container = styled.div`
   border-style: solid;
   border-width: 0.5px;
   border-color: ${Colors.PRIMARY};
+  cursor: pointer;
 `;
 
 const InnerContainer = styled.div`

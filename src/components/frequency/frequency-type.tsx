@@ -8,6 +8,7 @@ const Container = styled.div<{
 }>`
   margin-right: ${({ frequencyType }) => frequencyType === 'daily' ? '-10px' : '5px'};
   margin-left: 5px;
+  cursor: pointer;
 `;
 
 

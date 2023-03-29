@@ -13,6 +13,7 @@ const Container = styled.div`
   padding-top: 10px;
   padding-bottom: 10px;
   flex-direction: column;
+  cursor: pointer;
 `
 
 const InnerContainer = styled.div<{
