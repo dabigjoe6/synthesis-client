@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from "styled-components";
+import { CSSTransition } from 'react-transition-group';
 import Text from '../text';
 import DaysItems from './days-items';
 import Button from '../button';
@@ -38,7 +39,12 @@ const Container = styled.div`
 
 
 const DaysModal = ({ isVisible, closeDaysModal }: DaysModalProps) => {
-  return isVisible ? (
+  return (<CSSTransition
+    in={isVisible}
+    timeout={300}
+    unmountOnExit
+    classNames="modal"
+  >
     <ModalContainer>
       <Container>
         <Text align='center'>Which days of the week you want to receive your digest?</Text>
@@ -46,7 +52,7 @@ const DaysModal = ({ isVisible, closeDaysModal }: DaysModalProps) => {
         <Button label="Done" onClick={closeDaysModal} />
       </Container>
     </ModalContainer>
-  ) : null
+  </CSSTransition>)
 };
 
 export default DaysModal;

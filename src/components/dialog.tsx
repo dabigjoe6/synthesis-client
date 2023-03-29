@@ -1,11 +1,9 @@
 import * as React from "react";
 import styled from "styled-components";
 import { CSSTransition } from 'react-transition-group';
-import { DialogContext } from "../../contexts/Dialog";
-import Button from "../button";
-import { Colors } from "../../config";
-
-import './dialog.css';
+import { DialogContext } from "../contexts/Dialog";
+import Button from "./button";
+import { Colors } from "../config";
 
 const Container = styled.div`
   display: flex;
@@ -16,6 +14,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   color: white;
+  position: absolute;
+  top: 0px;
 `;
 
 const ModalContainer = styled.div`
