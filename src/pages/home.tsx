@@ -45,6 +45,11 @@ const NewSubscribptionButton = styled(Button)`
   margin-top: 0px;
 `;
 
+const EmptySubscriptionContainer = styled.div`
+  position: relative;
+  top: 40vh;
+`;
+
 const Home = () => {
   const { subscriptions, isDataLoading } = React.useContext(UserContext);
 
@@ -91,13 +96,13 @@ const Home = () => {
             </div>
           </SubscriptionsContainer>
         ) : (
-          <>
+          <EmptySubscriptionContainer>
             <Text fontSize={FontSize.lg}>You don't have any subscriptions</Text>
             <Button
               label="Add Subscription now"
               onClick={showSubscriptionModal}
             />
-          </>
+          </EmptySubscriptionContainer>
         )}
         <Footer />
       </Container>
