@@ -63,9 +63,9 @@ const buildSelectedDays = (days: Array<string>) => {
 export const FrequencyProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = React.useContext(AuthContext);
 
-  const userFrequencyType = user?.settings.frequency.frequencyType || "daily";
-  const userTimes = user?.settings.frequency.time || ["08:00"];
-  const userSelectedDays = buildSelectedDays((user?.settings.frequency.days || ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]) as Array<string>);
+  const userFrequencyType = user?.settings?.frequency?.frequencyType || "daily";
+  const userTimes = user?.settings?.frequency?.time || ["08:00"];
+  const userSelectedDays = buildSelectedDays((user?.settings?.frequency?.days || ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]) as Array<string>);
 
   const [frequencyType, setFrequencyType] = React.useState<string>(userFrequencyType);
   const [times, setTimes] = React.useState<Array<string>>(userTimes);

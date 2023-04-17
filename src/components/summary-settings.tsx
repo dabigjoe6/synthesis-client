@@ -30,7 +30,7 @@ const SummarySettings = () => {
   const { enableSummary, disableSummary } = React.useContext(SettingsContext);
 
 
-  const [isSummaryOn, setIsSummaryOn] = React.useState<boolean>(user?.settings.isSummaryEnabled || true);
+  const [isSummaryOn, setIsSummaryOn] = React.useState<boolean>(user?.settings?.isSummaryEnabled || true);
   const [isLoading, setIsLoading] = React.useState(false);
 
 
