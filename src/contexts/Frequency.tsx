@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { dayMap } from '../config';
 import { AuthContext } from './Auth';
+import 'moment-timezone';
+import * as moment from 'moment';
 
 interface FrequencyContextI {
   isNewChange: boolean;
@@ -60,11 +62,23 @@ const buildSelectedDays = (days: Array<string>) => {
   return selectedDaysMap;
 }
 
+const offsetTimesToUserTimezone = (times: Array<string>, timezone: string): Array<string> => {
+  const userOffset = moment.tz(timezone).utcOffset();
+
+  return times.map((time) => {
+    const datetime = moment.utc(`${moment().format("YYYY-MM-DD")} ${time}`);
+    const offsetted = datetime.utcOffset(userOffset);
+
+    return offsetted.tz(timezone).format("HH:mm");
+  });
+}
+
 export const FrequencyProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = React.useContext(AuthContext);
 
   const userFrequencyType = user?.settings?.frequency?.frequencyType || "daily";
-  const userTimes = user?.settings?.frequency?.time || ["08:00"];
+  const userTimeZone = user?.settings?.frequency?.timeZone || "Europe/London";
+  const userTimes = offsetTimesToUserTimezone(user?.settings?.frequency?.time || ["08:00"], userTimeZone);
   const userSelectedDays = buildSelectedDays((user?.settings?.frequency?.days || ["mon", "tue", "wed", "thu", "fri", "sat", "sun"]) as Array<string>);
 
   const [frequencyType, setFrequencyType] = React.useState<string>(userFrequencyType);

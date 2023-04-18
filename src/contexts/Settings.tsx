@@ -2,6 +2,8 @@ import * as React from 'react';
 import { toast } from 'react-toastify';
 import { StatusCallback } from '../types';
 import { AuthContext } from './Auth';
+import 'moment-timezone';
+import * as moment from 'moment';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -25,6 +27,7 @@ export interface FrequencyI {
   frequencyType: string;
   days?: Array<WeekDays>;
   time: Array<string>;
+  timeZone: string;
 }
 
 export interface SettingsI {
@@ -52,6 +55,17 @@ export const SettingsContext = React.createContext<SettingsContextI>({
 
 export const SettingsProvider = ({ children }: { children: React.ReactNode }) => {
   const { user, token, signUserOut, updateUserSettings } = React.useContext(AuthContext);
+
+  const offsetTimesToGMTZero = (times: Array<string>, timezone: string): Array<string> => {
+    const gmtZeroOffset = moment.tz("GMT+0").utcOffset();
+
+    return times.map((time) => {
+      const datetime = moment.tz(`${moment().format("YYYY-MM-DD")} ${time}`, timezone);
+      const offsetted = datetime.utcOffset(gmtZeroOffset);
+
+      return offsetted.format("HH:mm");
+    });
+  }
 
   const pauseDigest = async (cb: StatusCallback) => {
     try {
@@ -134,9 +148,10 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
   const saveNewFrequency = async (_frequencyType: string, _times: Array<string>, _selectedDays: { [key: string]: string }, cb: StatusCallback) => {
     try {
       if (user && user._id) {
+        const usersTimeZone = moment.tz.guess();
         const response = await fetch(BASE_URL + "/user/set-frequency", {
           method: "POST",
-          body: JSON.stringify({ frequencyType: _frequencyType, time: _times, days: Object.values(_selectedDays) }),
+          body: JSON.stringify({ frequencyType: _frequencyType, time: offsetTimesToGMTZero(_times, usersTimeZone), days: Object.values(_selectedDays), timeZone: usersTimeZone }),
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -159,7 +174,8 @@ export const SettingsProvider = ({ children }: { children: React.ReactNode }) =>
             frequency: {
               frequencyType: _frequencyType,
               time: _times,
-              days: (Object.values(_selectedDays) as unknown) as WeekDays[]
+              days: (Object.values(_selectedDays) as unknown) as WeekDays[],
+              timeZone: moment.tz.guess()
             }
           }
         })
