@@ -10,6 +10,7 @@ const FrequencySelect = styled.select`
   -moz-appearance: none;
   /* for Chrome */
   -webkit-appearance: none;
+  appearance: none;
   font-size: 0.9rem;
 `;
 

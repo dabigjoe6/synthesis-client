@@ -16,7 +16,7 @@ interface FrequencyTimeProps {
 const Container = styled.div<{
   time: string;
 }>`
-  width: ${({ time }) => isLongTime(time) ? "55px" : "48px"};
+  width: ${({ time }) => isLongTime(time) ? "60px" : "48px"};
   cursor: pointer;
 `;
 
