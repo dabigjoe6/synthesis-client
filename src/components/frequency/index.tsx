@@ -33,7 +33,7 @@ const InnerContainer = styled.div`
 
 const ActionContainer = styled.div`
   display: flex;
-  margin-left: 0.8em;
+  margin-left: 10px;
   align-items: center;
   width: 35px;
   justify-content: space-between;

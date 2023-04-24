@@ -5,7 +5,7 @@ import { FrequencyContext } from '../../contexts/Frequency';
 import FrequencySelect from './frequency-select';
 
 const isLongTime = (time: string) => {
-  return time.includes("10") || time.includes("11") || time.includes("12") || time.includes("22") || time.includes("23")
+  return time.includes("10") || time.includes("11") || time.includes("12") || time.includes("22") || time.includes("23") || time.includes("00:00");
 }
 
 interface FrequencyTimeProps {
