@@ -26,7 +26,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 const Router = () => {
   React.useEffect(() => {
     const environment = process.env.REACT_APP_ENV;
-    document.title = `Synthesis - ${environment === "development" ? "DEV" : environment === "staging" ? "STAGING" : ""
+    document.title = `Synthesis${environment === "development" ? " - DEV" : environment === "staging" ? " - STAGING" : ""
       }`;
   }, []);
 
