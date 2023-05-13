@@ -83,7 +83,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
     } catch (err) {
-      toast.error(err.message || err);
       console.error("Could not get user details", err);
     }
   };
