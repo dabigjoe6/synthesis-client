@@ -1,4 +1,6 @@
 ## Web Client for Synthesis => https://github.com/dabigjoe6/synthesis
+### Staging environment - https://master--synthesis-app.netlify.app/
+### Prodcution - https://app.synthesisapp.com
 
 ## Development
 ```
