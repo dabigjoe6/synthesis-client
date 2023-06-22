@@ -5,7 +5,6 @@ import {
   Button,
   SubscriptionSheet,
   SubscriptionItem,
-  Spacing,
   Footer,
   Frequency,
 } from "../components";
@@ -35,13 +34,9 @@ const SubscriptionsContainer = styled.div`
   justify-content: space-between;
 scr`;
 
-const SubscriptionList = styled.div`
-  max-height: 25rem;
-  overflow-y: auto;
-`;
-
 const NewSubscribptionButton = styled(Button)`
   margin-top: 0px;
+  margin-bottom: 20px;
 `;
 
 const EmptySubscriptionContainer = styled.div`
@@ -77,21 +72,16 @@ const Home = () => {
               <FrequencyProvider>
                 <Frequency />
               </FrequencyProvider>
-              <Spacing />
-              <SubscriptionList>
+              <NewSubscribptionButton
+                label="Add new Subscription"
+                onClick={showSubscriptionModal}
+              />
                 {subscriptions && subscriptions.map((item) => (
                   <SubscriptionItem
                     key={item?.subscription?.url}
                     data={item?.subscription}
                   />
                 ))}
-              </SubscriptionList>
-              <Spacing />
-              <NewSubscribptionButton
-                label="Add new Subscription"
-                onClick={showSubscriptionModal}
-              />
-
             </div>
           </SubscriptionsContainer>
         ) : (
