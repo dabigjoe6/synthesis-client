@@ -36,8 +36,8 @@ const SubscriptionsContainer = styled.div`
 scr`;
 
 const SubscriptionList = styled.div`
-max-height: 25rem;
-overflow-y: auto;
+  max-height: 25rem;
+  overflow-y: auto;
 `;
 
 const NewSubscribptionButton = styled(Button)`
