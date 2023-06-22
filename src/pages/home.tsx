@@ -20,7 +20,6 @@ const Container = styled.div`
   flex-direction: column;
   min-height: 100vh;
   box-sizing: border-box;
-  overflow: scroll;
 `;
 
 const SubscriptionsContainer = styled.div`
@@ -37,8 +36,8 @@ const SubscriptionsContainer = styled.div`
 scr`;
 
 const SubscriptionList = styled.div`
-max-height: 25rem;
-overflow: scroll;
+  max-height: 25rem;
+  overflow-y: auto;
 `;
 
 const NewSubscribptionButton = styled(Button)`
