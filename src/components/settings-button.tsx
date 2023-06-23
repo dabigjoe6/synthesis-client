@@ -41,7 +41,7 @@ const SettingsBtn = ({ onClick }: SettingsBtnProps) => {
   return (
     <Container>
       <Wrapper onClick={onClick}>
-        <GiSettingsKnobs />
+        <GiSettingsKnobs style={{ marginRight: 5 }} />
         <Text>Settings</Text>
       </Wrapper>
     </Container>
