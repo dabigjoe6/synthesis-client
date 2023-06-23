@@ -2,25 +2,49 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { times } from '../../config';
 import { FrequencyContext } from '../../contexts/Frequency';
-import FrequencySelect from './frequency-select';
-
-const isLongTime = (time: string) => {
-  return time.includes("10") || time.includes("11") || time.includes("12") || time.includes("22") || time.includes("23") || time.includes("00:00");
-}
+import { Colors } from '../../config';
 
 interface FrequencyTimeProps {
   time: string;
   index: number;
+  isLast: boolean;
 }
 
 const Container = styled.div<{
   time: string;
 }>`
-  width: ${({ time }) => isLongTime(time) ? "60px" : "48px"};
   cursor: pointer;
+  position: relative;
+  width: 40px;
+  height: 12px;
 `;
 
-const FrequencyTime = ({ time, index }: FrequencyTimeProps) => {
+const Time = styled.div`
+  color: ${Colors.PRIMARY};
+  text-decoration: underline;
+  position: absolute;
+  top: 0px;
+  z-index: 1;
+`
+
+const Select = styled.select`
+  color: transparent;
+  background: transparent;
+  border-width: 0;
+  /* for Firefox */
+  -moz-appearance: none;
+  /* for Chrome */
+  -webkit-appearance: none;
+  appearance: none;
+  font-size: 0.9rem;
+  display: inline-block;
+  width: 50px;
+  background: transparent;
+  z-index: 2;
+  position: absolute;
+`
+
+const FrequencyTime = ({ time, index, isLast }: FrequencyTimeProps) => {
   const { updateTime } = React.useContext(FrequencyContext);
 
   const generateOptions = () => {
@@ -37,9 +61,10 @@ const FrequencyTime = ({ time, index }: FrequencyTimeProps) => {
 
   return (
     <Container time={time}>
-      <FrequencySelect value={time} onChange={handleTime}>
+      <Select value={time} onChange={handleTime}>
         {generateOptions()}
-      </FrequencySelect>
+      </Select>
+      <Time>{time}{isLast ? null : ","}</Time>
     </Container>
   )
 };
