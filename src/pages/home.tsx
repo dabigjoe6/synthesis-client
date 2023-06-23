@@ -8,7 +8,7 @@ import {
   SubscriptionItem,
   Footer,
   Frequency,
-  SettingsBtn
+  Header
 } from "../components";
 import { FontSize } from "../components/text";
 import { FrequencyProvider } from "../contexts/Frequency";
@@ -25,7 +25,7 @@ const Container = styled.div`
 
 const SubscriptionsContainer = styled.div`
   height: 100vh;
-  padding-top: 50px;
+  padding-top: 40px;
   width: 100vw;
   max-width: 500px;
   padding-right: 15px;
@@ -33,7 +33,6 @@ const SubscriptionsContainer = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 scr`;
 
 const NewSubscribptionButton = styled(Button)`
@@ -76,6 +75,7 @@ const Home = () => {
           <Text>Loading...</Text>
         ) : subscriptions && subscriptions.length > 0 ? (
           <SubscriptionsContainer>
+            <Header showSettingsModal={showSettingsModal} />
             <div>
               <Text fontSize={FontSize.lg} align="center" bold>
                 Your subscriptions
@@ -83,7 +83,6 @@ const Home = () => {
               <FrequencyProvider>
                 <Frequency />
               </FrequencyProvider>
-              <SettingsBtn onClick={showSettingsModal} />
               <NewSubscribptionButton
                 label="Add new Subscription"
                 onClick={showSubscriptionModal}
