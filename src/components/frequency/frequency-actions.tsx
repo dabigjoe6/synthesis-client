@@ -19,6 +19,7 @@ const ActionButton = styled(Button)`
 
 const SaveBtn = styled(ActionButton)`
   margin-right: 10px;
+  margin-top: 0px;
 `;
 
 const ResetBtn = styled(ActionButton)`
@@ -28,6 +29,7 @@ const ResetBtn = styled(ActionButton)`
   border-style: 1px;
   border-color: ${Colors.PRIMARY};
   box-shadow: none;
+  margin-top: 0px;
 `;
 
 

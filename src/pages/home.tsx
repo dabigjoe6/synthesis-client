@@ -4,9 +4,11 @@ import {
   Text,
   Button,
   SubscriptionSheet,
+  SettingsSheet,
   SubscriptionItem,
   Footer,
   Frequency,
+  SettingsBtn
 } from "../components";
 import { FontSize } from "../components/text";
 import { FrequencyProvider } from "../contexts/Frequency";
@@ -47,15 +49,24 @@ const EmptySubscriptionContainer = styled.div`
 const Home = () => {
   const { subscriptions, isDataLoading } = React.useContext(UserContext);
 
-  const [isSubscriptionModalVisible, setSubscriptionModalVisibility] =
-    React.useState(false);
+  const [isSubscriptionModalVisible, setSubscriptionModalVisibility] = React.useState(false);
+
+  const [isSettingsModalVisible, setSettingsModalVisibility] = React.useState(false);
 
   const showSubscriptionModal = React.useCallback(() => {
     setSubscriptionModalVisibility(true);
   }, []);
 
+  const showSettingsModal = React.useCallback(() => {
+    setSettingsModalVisibility(true);
+  }, []);
+
   const hideSubscriptionModal = React.useCallback(() => {
     setSubscriptionModalVisibility(false);
+  }, []);
+
+  const hideSettingsModal = React.useCallback(() => {
+    setSettingsModalVisibility(false);
   }, []);
 
   return (
@@ -72,16 +83,17 @@ const Home = () => {
               <FrequencyProvider>
                 <Frequency />
               </FrequencyProvider>
+              <SettingsBtn onClick={showSettingsModal} />
               <NewSubscribptionButton
                 label="Add new Subscription"
                 onClick={showSubscriptionModal}
               />
-                {subscriptions && subscriptions.map((item) => (
-                  <SubscriptionItem
-                    key={item?.subscription?.url}
-                    data={item?.subscription}
-                  />
-                ))}
+              {subscriptions && subscriptions.map((item) => (
+                <SubscriptionItem
+                  key={item?.subscription?.url}
+                  data={item?.subscription}
+                />
+              ))}
             </div>
           </SubscriptionsContainer>
         ) : (
@@ -98,6 +110,10 @@ const Home = () => {
       <SubscriptionSheet
         isVisible={isSubscriptionModalVisible}
         onClose={hideSubscriptionModal}
+      />
+      <SettingsSheet
+        isVisible={isSettingsModalVisible}
+        onClose={hideSettingsModal}
       />
     </>
   );

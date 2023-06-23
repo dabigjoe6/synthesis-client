@@ -13,11 +13,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 15px;
-  margin-bottom: 0px;
+  margin-bottom: 15px;
   align-items: center;
   padding-right: 10px;
   padding-left: 10px;
-  height: 75px;
 `
 
 const InnerContainer = styled.div`
