@@ -4,8 +4,6 @@ import { Colors } from "../config";
 import { AuthContext } from "../contexts/Auth";
 import Text from "./text";
 import Button from "./button";
-import SummarySettings from "./summary-settings";
-import PauseDigest from "./pause-digest";
 
 
 const Container = styled.div`
@@ -20,15 +18,7 @@ const Container = styled.div`
   bottom: 5rem;
 `;
 
-const ConfigContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-right: auto;
-  margin-left: auto;
-  align-self: center;
-`;
+
 
 const LinkBtn = styled(Button)`
   width: max-content;
@@ -56,10 +46,6 @@ const Footer = () => {
 
   return (
     <Container>
-      <ConfigContainer>
-        <SummarySettings />
-        <PauseDigest />
-      </ConfigContainer>
       <FooterText>
         Signed in as {user?.email}
         <LinkBtn label="Switch user" onClick={signUserOut} />
