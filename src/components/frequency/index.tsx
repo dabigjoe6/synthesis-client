@@ -48,13 +48,18 @@ const FrequencyTimeWrapper = styled.div`
   color: white;
 `
 
+const Comma = styled.div`
+  margin-right: 3px;
+  margin-left: 3px;
+`
+
 
 const renderFrequencyTimes = (times: Array<string>) => {
   return times.map((time, index) => {
     return (
       <FrequencyTimeWrapper key={time + "_" + index}>
         <FrequencyTime key={index} time={time} index={index} />
-        {index === times.length - 1 ? null : ", "}
+        {index === times.length - 1 ? null : (<Comma><Text>{" , "}</Text></Comma>)}
       </FrequencyTimeWrapper>
     )
   })

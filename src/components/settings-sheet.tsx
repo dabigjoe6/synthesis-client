@@ -61,9 +61,7 @@ const ConfigContainer = styled.div`
 const SettingsModal = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => void }) => {
   const sheetRef = React.useRef<BottomSheetRef>();
 
-  const handleClose = React.useCallback(() => {
-    onClose();
-  }, []);
+  const handleClose = () => { onClose() }
 
   return (
     <BottomSheet
