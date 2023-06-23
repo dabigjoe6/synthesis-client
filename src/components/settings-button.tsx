@@ -39,8 +39,8 @@ const Wrapper = styled.div`
 
 const SettingsBtn = ({ onClick }: SettingsBtnProps) => {
   return (
-    <Container onClick={onClick}>
-      <Wrapper>
+    <Container>
+      <Wrapper onClick={onClick}>
         <GiSettingsKnobs />
         <Text>Settings</Text>
       </Wrapper>
