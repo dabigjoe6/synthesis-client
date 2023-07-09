@@ -4,14 +4,11 @@ import '@testing-library/jest-dom'
 import * as React from 'react';
 import { UserContext } from '../../contexts/User';
 import { FrequencyContext, FrequencyProvider } from '../../contexts/Frequency';
-import * as moment from 'moment';
+import moment from 'moment-timezone';
+import MockDate from 'mockdate'
 
 jest.mock("../../components/footer", () => () => {return <div>Mock Footer Component</div>})
 jest.mock("../../components/frequency/index", () => () => {return <div>Mock Frequency Component</div>})
-// jest.mock("../../contexts/Frequency/FrequencyProvider", () => () => {return <div>Mock FrequencyProvider Component</div>})
-
-// jest.mock('moment', () => () => ({format: () => '2023–01–01T12:00:00+00:00'}));
-jest.mock('moment', () => () => (jest.requireActual('moment-timezone')).tz('2021-01-01T00:00:00.000Z', 'GMT'));
 
 const mockUserContext = {
   subscriptions: [],
@@ -24,8 +21,8 @@ const mockUserContext = {
       isSummaryEnabled: false,
       frequency: {
         frequencyType: "weekly",
-        time: ["mockTime"],
-        timeZone: "mockTimeZone",
+        time: ["2021-01-01T00:00:00.000Z"],
+        timeZone: "UTC",
       }
     }
   },
@@ -71,6 +68,7 @@ describe('Home page tests', () => {
   });
 
   test('renders Home - user with subscriptions', async () => {
+    MockDate.set(new Date('1/01/2023'));
     const mockUserContextUpdated = {
       ...mockUserContext, 
       isDataLoading: false, 
@@ -90,8 +88,10 @@ describe('Home page tests', () => {
         </FrequencyContext.Provider>
       </UserContext.Provider> 
       );
-    expect(screen.getByText(/You don't have any subscriptions/)).toBeInTheDocument();
-    expect(screen.getByText(/Add Subscription now/)).toBeInTheDocument();
+    expect(screen.getByText(/mockSubscriptionName/)).toBeInTheDocument();
+    expect(screen.getByText(/unsubscribe/)).toBeInTheDocument();
+    expect(screen.getByText(/Add new Subscription/)).toBeInTheDocument();
+    MockDate.reset();
   });
 
 });

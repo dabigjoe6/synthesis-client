@@ -8,6 +8,7 @@
     "jsx": "react",
     "target": "ESNext",
     "noImplicitAny": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["./src/"]
 }

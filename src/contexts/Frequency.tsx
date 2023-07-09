@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { dayMap } from '../config';
 import { AuthContext } from './Auth';
-import * as moment from 'moment';
-import 'moment-timezone';
+import moment from 'moment-timezone';
 
 interface FrequencyContextI {
   isNewChange: boolean;

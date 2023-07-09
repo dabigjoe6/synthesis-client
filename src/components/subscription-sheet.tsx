@@ -107,7 +107,7 @@ const RSSSchema = Yup.object().shape({
 const SERVICES_VALUES = Object.values(Services);
 
 const SubscriptionModal = ({ isVisible, onClose }: { isVisible: boolean; onClose: () => void }) => {
-  const sheetRef = React.useRef<BottomSheetRef>();
+  const sheetRef = React.useRef<BottomSheetRef>(null);
 
   const [isLoading, setIsLoading] = React.useState(false);
 

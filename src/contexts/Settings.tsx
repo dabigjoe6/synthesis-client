@@ -2,8 +2,7 @@ import * as React from 'react';
 import { toast } from 'react-toastify';
 import { StatusCallback } from '../types';
 import { AuthContext } from './Auth';
-import 'moment-timezone';
-import * as moment from 'moment';
+import moment from 'moment-timezone';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
