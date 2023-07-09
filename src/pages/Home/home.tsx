@@ -9,10 +9,10 @@ import {
   Footer,
   Frequency,
   Header
-} from "../components";
-import { FontSize } from "../components/text";
-import { FrequencyProvider } from "../contexts/Frequency";
-import { UserContext } from "../contexts/User";
+} from "../../components";
+import { FontSize } from "../../components/text";
+import { FrequencyProvider } from "../../contexts/Frequency";
+import { UserContext } from "../../contexts/User";
 
 const Container = styled.div`
   display: flex;

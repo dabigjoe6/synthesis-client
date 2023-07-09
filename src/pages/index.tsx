@@ -7,7 +7,7 @@ import { SettingsProvider } from "../contexts/Settings";
 
 import { Layout } from "../components";
 
-import Home from "./home";
+import Home from "./Home/home";
 
 import Login from "./auth/login";
 import SignUp from "./auth/sign-up";
