@@ -1,19 +1,19 @@
 import * as React from "react";
 import * as Yup from "yup";
 import { useFormik } from "formik";
-import { Input, Button, Spacing } from "../../components";
+import { Input, Button, Spacing } from "../../../../components";
 import {
   Container,
   Form,
   H4,
   GoogleSignIn,
   EmailSignIn,
-} from "./components";
-import { AuthContext, LoginDetails } from "../../contexts/Auth";
+} from "..";
+import { AuthContext, LoginDetails } from "../../../../contexts/Auth";
 import { useNavigate } from "react-router-dom";
 import { useGoogleLogin } from '@react-oauth/google';
 import styled from "styled-components";
-import { Colors } from "../../config";
+import { Colors } from "../../../../config";
 
 const CreateNewAccountBtn = styled(Button) <{ transparent: boolean }>`
   margin-top: 10px;

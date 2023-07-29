@@ -59,6 +59,7 @@ const SummarySettings = () => {
     <Container>
       <Text>{`Summaries of digest (${isSummaryOn ? 'On' : 'Off'})`}</Text>
       <Switch
+        data-testid="toggle-summary-btn"
         disabled={isLoading}
         onChange={handleChange}
         checked={isSummaryOn}

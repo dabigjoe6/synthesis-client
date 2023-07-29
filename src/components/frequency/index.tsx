@@ -62,12 +62,12 @@ const renderFrequencyTimes = (times: Array<string>) => {
 const AddTime = ({ onClick }: { onClick: () => void; }) => {
 
   const handleClick = () => { onClick() }
-  return <AiOutlinePlus style={{ cursor: 'pointer' }} onClick={handleClick} />
+  return <AiOutlinePlus data-testid="add-time-btn" style={{ cursor: 'pointer' }} onClick={handleClick} />
 }
 
 const RemoveTime = ({ onClick }: { onClick: () => void; }) => {
   const handleClick = () => { onClick() }
-  return <AiOutlineMinus style={{ cursor: 'pointer' }} onClick={handleClick} />
+  return <AiOutlineMinus data-testid="remove-time-btn" style={{ cursor: 'pointer' }} onClick={handleClick} />
 }
 
 
