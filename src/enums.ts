@@ -1,4 +1,4 @@
-export enum Enums {
+export enum SubscriptionListMessage {
     LOADING = "Loading...",
     NO_SUBS_MESSAGE = "You don't have any subscriptions",
     ADD_SUBS_MESSAGE = "Add subscription now",

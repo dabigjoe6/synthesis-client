@@ -13,7 +13,7 @@ import {
 import { FontSize } from "../../components/text";
 import { FrequencyProvider } from "../../contexts/Frequency";
 import { UserContext } from "../../contexts/User";
-import { Enums } from "../../enums";
+import { SubscriptionListMessage } from "../../enums";
 
 const Container = styled.div`
   display: flex;
@@ -73,19 +73,19 @@ const Home = () => {
     <>
       <Container>
         {isDataLoading ? (
-          <Text>{Enums.LOADING}</Text>
+          <Text>{SubscriptionListMessage.LOADING}</Text>
         ) : subscriptions && subscriptions.length > 0 ? (
           <SubscriptionsContainer>
             <Header showSettingsModal={showSettingsModal} />
             <div>
               <Text fontSize={FontSize.lg} align="center" bold>
-                {Enums.SUBS_LIST_TITLE}
+                {SubscriptionListMessage.SUBS_LIST_TITLE}
               </Text>
               <FrequencyProvider>
                 <Frequency />
               </FrequencyProvider>
               <NewSubscribptionButton
-                label={Enums.ADD_NEW_SUBS_MESSAGE}
+                label={SubscriptionListMessage.ADD_NEW_SUBS_MESSAGE}
                 onClick={showSubscriptionModal}
               />
               {subscriptions && subscriptions.map((item) => (
@@ -98,9 +98,9 @@ const Home = () => {
           </SubscriptionsContainer>
         ) : (
           <EmptySubscriptionContainer>
-            <Text fontSize={FontSize.lg}>{Enums.NO_SUBS_MESSAGE}</Text>
+            <Text fontSize={FontSize.lg}>{SubscriptionListMessage.NO_SUBS_MESSAGE}</Text>
             <Button
-              label={Enums.ADD_SUBS_MESSAGE}
+              label={SubscriptionListMessage.ADD_SUBS_MESSAGE}
               onClick={showSubscriptionModal}
             />
           </EmptySubscriptionContainer>
