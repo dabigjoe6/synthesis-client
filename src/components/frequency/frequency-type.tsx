@@ -56,8 +56,8 @@ const FrequencyType = () => {
   return (
     <Container frequencyType={frequencyType}>
       <Select value={frequencyType} onChange={handleFrequencyType}>
-        <option value="daily">Daily</option>
-        <option value="weekly">Weekly</option>
+        <option value="daily" data-testid="subs-daily-option">Daily</option>
+        <option value="weekly" data-testid="subs-weekly-option">Weekly</option>
       </Select>
       <Type>{frequencyType}</Type>
     </Container>

@@ -9,10 +9,11 @@ import {
   Footer,
   Frequency,
   Header
-} from "../components";
-import { FontSize } from "../components/text";
-import { FrequencyProvider } from "../contexts/Frequency";
-import { UserContext } from "../contexts/User";
+} from "../../components";
+import { FontSize } from "../../components/text";
+import { FrequencyProvider } from "../../contexts/Frequency";
+import { UserContext } from "../../contexts/User";
+import { SubscriptionListMessage } from "../../enums";
 
 const Container = styled.div`
   display: flex;
@@ -72,19 +73,19 @@ const Home = () => {
     <>
       <Container>
         {isDataLoading ? (
-          <Text>Loading...</Text>
+          <Text>{SubscriptionListMessage.LOADING}</Text>
         ) : subscriptions && subscriptions.length > 0 ? (
           <SubscriptionsContainer>
             <Header showSettingsModal={showSettingsModal} />
             <div>
               <Text fontSize={FontSize.lg} align="center" bold>
-                Your subscriptions
+                {SubscriptionListMessage.SUBS_LIST_TITLE}
               </Text>
               <FrequencyProvider>
                 <Frequency />
               </FrequencyProvider>
               <NewSubscribptionButton
-                label="Add new Subscription"
+                label={SubscriptionListMessage.ADD_NEW_SUBS_MESSAGE}
                 onClick={showSubscriptionModal}
               />
               {subscriptions && subscriptions.map((item) => (
@@ -97,9 +98,9 @@ const Home = () => {
           </SubscriptionsContainer>
         ) : (
           <EmptySubscriptionContainer>
-            <Text fontSize={FontSize.lg}>You don't have any subscriptions</Text>
+            <Text fontSize={FontSize.lg}>{SubscriptionListMessage.NO_SUBS_MESSAGE}</Text>
             <Button
-              label="Add Subscription now"
+              label={SubscriptionListMessage.ADD_SUBS_MESSAGE}
               onClick={showSubscriptionModal}
             />
           </EmptySubscriptionContainer>
