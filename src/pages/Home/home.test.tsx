@@ -1,13 +1,16 @@
-import Home from '.';
-import { fireEvent, render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom'
 import * as React from 'react';
+import MockDate from 'mockdate'
+import '@testing-library/jest-dom';
+import { fireEvent, render, screen } from '@testing-library/react';
+
+import Home from '.';
+
 import { UserContext } from '../../contexts/User';
 import { FrequencyContext } from '../../contexts/Frequency';
-import MockDate from 'mockdate'
 import { SubscriptionListMessage } from '../../enums';
+import { AuthContext } from '../../contexts/Auth';
 
-jest.mock("../../components/footer", () => () => { return <div>Mock Footer Component</div> })
+jest.mock("../../components/footer", () => () => { return <div>Mock Footer Component</div> });
 
 const mockUserContext = {
   subscriptions: [],
@@ -132,9 +135,9 @@ describe('Home page tests', () => {
     }
     render(
       <UserContext.Provider value={mockUserContextUpdated}>
-        <FrequencyContext.Provider value={mockFrequencyContext} >
-          <Home />
-        </FrequencyContext.Provider>
+          <FrequencyContext.Provider value={mockFrequencyContext} >
+            <Home />
+          </FrequencyContext.Provider>
       </UserContext.Provider>
     );
     const settingsBtn = screen.getByRole("button", { name: "Settings" });
@@ -147,16 +150,63 @@ describe('Home page tests', () => {
     const pauseDigestBtn = screen.getByText("Pause digest");
     expect(pauseDigestBtn).toBeInTheDocument();
     fireEvent.click(pauseDigestBtn);
-    // expect(screen.getByText("Your digest is paused, start receiving it again")).toBeInTheDocument();
-    // const resumeDigestBtn = screen.getByText("Resume digest");
-    // expect(resumeDigestBtn).toBeInTheDocument();
-    // fireEvent.click(resumeDigestBtn);
-    // expect(pauseDigestBtn).toBeInTheDocument();
-    // const closeSettingsBtn = screen.getByText("Close");
-    // expect(closeSettingsBtn).toBeInTheDocument();
-    // fireEvent.click(closeSettingsBtn);
-    // expect(screen.getByText(/Change Settings/)).not.toBeInTheDocument();
-    // MockDate.reset();
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    MockDate.reset();
+  });
+
+  test('Home - user with paused digest can resume their digest', async () => {
+    MockDate.set(new Date('1/01/2023'));
+    const mockUserContextUpdated = {
+      ...mockUserContext,
+      user: {
+        ...mockUserContext.user,
+        settings: {
+          ...mockUserContext.user.settings,
+          isDigestPaused: true
+        }
+      },
+      isDataLoading: false,
+      subscriptions: [{
+        subscription: {
+          name: "mockSubscriptionName",
+          url: "mockSubscriptionUrl",
+          _id: "mockSubscriptionId",
+          source: "mockSubscriptionSource"
+        }
+      }]
+    }
+
+    const mockAuthContext = {
+      isUserLoggedIn: false,
+      user: mockUserContextUpdated.user,
+      token: null,
+      registerUser: () => { },
+      signUserIn: () => { },
+      signUserOut: () => { },
+      resetUsersPassword: () => { },
+      changePassword: () => { },
+      signUserInWithGoogle: () => { },
+      getUserDetails: () => { },
+      updateUserSettings: () => { }
+    };
+
+    render(
+      <AuthContext.Provider value={mockAuthContext}>
+        <UserContext.Provider value={mockUserContextUpdated}>
+          <Home />
+        </UserContext.Provider>
+      </AuthContext.Provider>
+
+    );
+    const settingsBtn = screen.getByRole("button", { name: "Settings" });
+    fireEvent.click(settingsBtn);
+    expect(screen.getByText(/Change Settings/)).toBeInTheDocument();
+    expect(screen.getByText(/Your digest is paused, start receiving it again/)).toBeInTheDocument();
+    const resumeDigestBtn = screen.getByText("Resume digest");
+    expect(resumeDigestBtn).toBeInTheDocument();
+    fireEvent.click(resumeDigestBtn);
+    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    MockDate.reset();
   });
 
   test('Home - user can interact with frequency features', async () => {
@@ -173,6 +223,7 @@ describe('Home page tests', () => {
         }
       }]
     }
+
     render(
       <UserContext.Provider value={mockUserContextUpdated}>
         <FrequencyContext.Provider value={mockFrequencyContext} >
