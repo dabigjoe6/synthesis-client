@@ -44,6 +44,7 @@ const IconContainer = styled.div`
 
 const ResumeContainer = styled.div`
   padding: 20px;
+  margin-bottom: 20px;
   border-radius: 4px;
   background: ${Colors.BACKGROUND_LIGHT};
   display: flex;

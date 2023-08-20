@@ -8,12 +8,14 @@ import {
   SubscriptionItem,
   Footer,
   Frequency,
-  Header
+  Header,
+  PauseDigest
 } from "../../components";
 import { FontSize } from "../../components/text";
 import { FrequencyProvider } from "../../contexts/Frequency";
 import { UserContext } from "../../contexts/User";
 import { SubscriptionListMessage } from "../../enums";
+import { AuthContext } from "../../contexts/Auth";
 
 const Container = styled.div`
   display: flex;
@@ -47,6 +49,7 @@ const EmptySubscriptionContainer = styled.div`
 `;
 
 const Home = () => {
+  const { user } = React.useContext(AuthContext);
   const { subscriptions, isDataLoading } = React.useContext(UserContext);
 
   const [isSubscriptionModalVisible, setSubscriptionModalVisibility] = React.useState(false);
@@ -81,9 +84,10 @@ const Home = () => {
               <Text fontSize={FontSize.lg} align="center" bold>
                 {SubscriptionListMessage.SUBS_LIST_TITLE}
               </Text>
-              <FrequencyProvider>
-                <Frequency />
-              </FrequencyProvider>
+              {(user && user.settings && (typeof user.settings.isDigestPaused === "boolean") && user.settings.isDigestPaused) ? <PauseDigest /> :
+                <FrequencyProvider>
+                  <Frequency />
+                </FrequencyProvider>}
               <NewSubscribptionButton
                 label={SubscriptionListMessage.ADD_NEW_SUBS_MESSAGE}
                 onClick={showSubscriptionModal}
