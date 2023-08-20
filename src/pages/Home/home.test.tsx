@@ -201,8 +201,8 @@ describe('Home page tests', () => {
     const settingsBtn = screen.getByRole("button", { name: "Settings" });
     fireEvent.click(settingsBtn);
     expect(screen.getByText(/Change Settings/)).toBeInTheDocument();
-    expect(screen.getByText(/Your digest is paused, start receiving it again/)).toBeInTheDocument();
-    const resumeDigestBtn = screen.getByText("Resume digest");
+    expect(screen.getAllByText(/Your digest is paused, start receiving it again/)[1]).toBeInTheDocument();
+    const resumeDigestBtn = screen.getAllByText("Resume digest")[1];
     expect(resumeDigestBtn).toBeInTheDocument();
     fireEvent.click(resumeDigestBtn);
     expect(screen.getByText('Loading...')).toBeInTheDocument();
