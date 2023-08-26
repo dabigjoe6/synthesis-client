@@ -40,19 +40,11 @@ const FooterText = styled(Text)`
 const Footer = () => {
   const { user, signUserOut } = React.useContext(AuthContext);
 
-  const handleJosephsProfile = () => {
-    window.open("https://www.linkedin.com/in/joseph-olabisi/");
-  };
-
   return (
     <Container>
       <FooterText>
         Signed in as {user?.email}
         <LinkBtn label="Switch user" onClick={signUserOut} />
-      </FooterText>
-      <FooterText>
-        Developed by
-        <LinkBtn label="Joseph Olabisi" onClick={handleJosephsProfile} />
       </FooterText>
     </Container>
   );
