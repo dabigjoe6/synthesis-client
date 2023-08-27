@@ -35,6 +35,8 @@ const Wrapper = styled.div`
   width: 90%;
   max-width: 400px;
   align-items: center;
+  min-height: 100vh;
+  justify-content: center;
 `;
 
 const Logo = styled.img`
