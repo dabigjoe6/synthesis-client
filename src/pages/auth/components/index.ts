@@ -1,6 +1,6 @@
-export { default as Container } from "./Container";
-export { default as Form } from "./Form";
-export { default as H2 } from "./H2";
-export { default as H4 } from "./H4";
-export { default as GoogleSignIn } from './GoogleSignIn';
-export { default as EmailSignIn } from './EmailSignIn';
+export { default as Form } from "./form";
+export { default as H2 } from "./h2";
+export { default as H4 } from "./h4";
+export { default as GoogleSignIn } from './google-signin';
+export { default as EmailSignIn } from './email-signin';
+export { default as Container } from "./container";

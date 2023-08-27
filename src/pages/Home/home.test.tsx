@@ -3,7 +3,7 @@ import MockDate from 'mockdate'
 import '@testing-library/jest-dom';
 import { fireEvent, render, screen } from '@testing-library/react';
 
-import Home from '.';
+import Home from './index';
 
 import { UserContext } from '../../contexts/User';
 import { FrequencyContext } from '../../contexts/Frequency';
