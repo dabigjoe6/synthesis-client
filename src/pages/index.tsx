@@ -9,7 +9,7 @@ import { Layout } from "../components";
 
 import Home from "./home";
 
-import Login from "./auth/components/login";
+import Login from "./auth/login";
 import SignUp from "./auth/sign-up";
 import ForgotPassword from "./auth/forgot-password";
 import ChangePassword from "./auth/change-password";
