@@ -1,5 +1,5 @@
 import * as React from 'react';
-import SignInBtn from "./SignInBtn";
+import SignInBtn from "./signin-btn";
 
 
 const GoogleSignIn = (props: any) => {

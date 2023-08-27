@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Text } from "../../../components";
 import { Colors } from "../../../config";
 import styled from "styled-components";
-import H2 from "./H2";
+import H2 from "./h2";
 
 
 export interface SignInBtnProps {
