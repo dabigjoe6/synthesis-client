@@ -10,7 +10,7 @@ const Layout = () => {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
+    height: min-content;
     width: 100vw;
   `;
   return (

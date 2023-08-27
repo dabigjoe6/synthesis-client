@@ -23,11 +23,13 @@ const Container = styled.div`
   justify-content: space-between;
   flex-direction: column;
   min-height: 100vh;
+  height: min-content;
   box-sizing: border-box;
 `;
 
 const SubscriptionsContainer = styled.div`
-  height: 100vh;
+  height: min-content;
+  min-height: 80vh;
   padding-top: 40px;
   width: 100vw;
   max-width: 500px;
