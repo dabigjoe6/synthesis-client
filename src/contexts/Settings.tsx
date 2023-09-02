@@ -1,8 +1,9 @@
 import * as React from 'react';
+import moment from 'moment-timezone';
 import { toast } from 'react-toastify';
 import { StatusCallback } from '../types';
 import { AuthContext } from './Auth';
-import moment from 'moment-timezone';
+import { offsetTimesToGMTZero } from '../helpers/offsetTimeToGMTZero';
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -54,17 +55,6 @@ export const SettingsContext = React.createContext<SettingsContextI>({
 
 export const SettingsProvider = ({ children }: { children: React.ReactNode }) => {
   const { user, token, signUserOut, updateUserSettings } = React.useContext(AuthContext);
-
-  const offsetTimesToGMTZero = (times: Array<string>, timezone: string): Array<string> => {
-    const gmtZeroOffset = moment.tz("GMT+0").utcOffset();
-
-    return times.map((time) => {
-      const datetime = moment.tz(`${moment().format("YYYY-MM-DD")} ${time}`, timezone);
-      const offsetted = datetime.utcOffset(gmtZeroOffset);
-
-      return offsetted.format("HH:mm");
-    });
-  }
 
   const pauseDigest = async (cb: StatusCallback) => {
     try {
