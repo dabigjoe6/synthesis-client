@@ -1,9 +1,11 @@
 import * as React from "react";
+import moment from 'moment-timezone';
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { SIGNED_IN_TOKEN, SIGNED_IN_USER_KEY } from "../config";
 import { StatusCallback } from "../types.js";
 import { SettingsI } from "./Settings.js";
+import { offsetTimesToGMTZero } from "../helpers/offsetTimeToGMTZero";
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -89,12 +91,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const registerUser = async ({ email, password }: LoginDetails, callback: StatusCallback) => {
     try {
+      const usersTimeZone = moment.tz.guess();
       const response = await fetch(BASE_URL + "/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, time: offsetTimesToGMTZero(["09:00"], usersTimeZone), timeZone: usersTimeZone }),
       });
 
       const data = await response.json();
@@ -152,9 +155,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signUserInWithGoogle = async (code: string, callback: StatusCallback) => {
     try {
+      const usersTimeZone = moment.tz.guess();
       const response = await fetch(BASE_URL + "/auth/oauth_login", {
         method: "POST",
-        body: JSON.stringify({ code }),
+        body: JSON.stringify({ code, time: offsetTimesToGMTZero(["09:00"], usersTimeZone), timeZone: usersTimeZone}),
         headers: {
           "Content-Type": "application/json",
         },
